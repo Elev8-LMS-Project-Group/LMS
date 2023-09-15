@@ -11,7 +11,7 @@ namespace LMSWeb.Controllers
 
         public IActionResult Kayit()
         {
-            return View("Kayit");
+            return View();
         }
     }
 }
