@@ -16,5 +16,22 @@ namespace LMSWeb.Controllers
             IEnumerable<Course> courseList = _unitOfWork.Course.GetAll();
             return View(courseList);
         }
+
+        //TO-DO
+        public IActionResult Create() 
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Course obj)
+        {
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Remove()
+        {
+            return View();
+        }
     }
 }
