@@ -83,6 +83,9 @@ namespace LMS.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EnrollmentCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -105,6 +108,7 @@ namespace LMS.DataAccess.Migrations
                         {
                             CourseId = 1,
                             Description = "Desc for sample course 1",
+                            EnrollmentCount = 23,
                             Title = "Sample Course 1",
                             UserId = 1
                         });

@@ -9,6 +9,9 @@ namespace LMS.DataAccess.Repository.IRepository
     public interface IUnitOfWork
     {
         ICourseRepository Course { get; }
+        ILessonRepository Lesson { get; }
+
+        IContentRepository Content { get; }
 
         void Save();
     }

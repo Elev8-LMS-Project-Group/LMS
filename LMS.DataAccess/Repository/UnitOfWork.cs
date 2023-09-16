@@ -11,11 +11,15 @@ namespace LMS.DataAccess.Repository
     {
         private ApplicationDbContext _db;
         public ICourseRepository Course { get; private set; }
+        public ILessonRepository Lesson { get; private set; }
+        public IContentRepository Content { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
             Course = new CourseRepository(_db);
+            Lesson = new LessonRepository(_db);
+            Content = new ContentRepository(_db);
             
         }
 
