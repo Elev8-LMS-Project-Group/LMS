@@ -1,0 +1,84 @@
+﻿@model Course
+
+@{
+    ViewData["Title"] = "Course Contents";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <!-- Display Lesson titles as links -->
+            @foreach (var lesson in Model.Lessons)
+            {
+                <div class="lesson-title">
+                    <a href="#" data-lessonid="@lesson.LessonId" onclick="updateLessonContent('@lesson.LessonId')">@lesson.Title</a>
+                </div>
+            }
+            <!-- Button to add a new lesson -->
+            <div>
+                <a asp-controller="Lesson" asp-action="Create" asp-route-courseId="@Model.CourseId" class="btn btn-success btn-block">Add New Lesson</a>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <!-- Display Lesson content here -->
+            <div id="lessonContent">
+                <!-- Content for the selected Lesson will be loaded here -->
+            </div>
+
+            <input type="hidden" id="hiddenLessonId" value="1asd" />
+        </div>
+    </div>
+</div>
+
+@section scripts1 {
+    <script>
+        // Function to update the lesson content when a title is clicked
+        function updateLessonContent(lessonId) {
+            console.log(lessonId);
+            var hiddenLessonId = document.getElementById('hiddenLessonId');
+            hiddenLessonId.value = lessonId;
+
+            // Send an AJAX request to the server to fetch the lesson
+            $.ajax({
+                url: '/Lesson/GetLesson', // Replace with the actual URL and controller action
+                type: 'GET',
+                data: { lessonId: lessonId },
+                success: function (data) {
+                    if (data) {
+                        // Update the lessonContent div with the retrieved lesson data
+                        var lessonContentDiv = document.getElementById('lessonContent');
+                        lessonContentDiv.innerHTML = '';
+
+                        // Create and append the lesson title
+                        var lessonTitle = document.createElement('h4');
+                        lessonTitle.textContent = data.Title;
+                        lessonContentDiv.appendChild(lessonTitle);
+
+                        // Create and append the contents as an unordered list
+                        if (data.Contents && data.Contents.$values.length > 0) {
+                            var contentList = document.createElement('ul');
+                            data.Contents.$values.forEach(function (content) {
+                                var contentItem = document.createElement('li');
+                                contentItem.textContent = content.ContentText;
+                                contentList.appendChild(contentItem);
+                            });
+                            lessonContentDiv.appendChild(contentList);
+                        }
+                        // Generate the "Add New Content" button for the selected lesson
+                        var addContentButton = document.createElement('button');
+                        addContentButton.className = 'btn btn-primary';
+                        addContentButton.textContent = 'Add New Content';
+                        addContentButton.onclick = function () {
+                            // Redirect to the content creation page with the selected lesson ID
+                            window.location.href = '/Content/Create?lessonId=' + data.LessonId;
+                        };
+                        lessonContentDiv.appendChild(addContentButton);
+                    }
+                },
+                error: function (error) {
+                    console.error(error);
+                }
+            });
+        }
+    </script>
+}

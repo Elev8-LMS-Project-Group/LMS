@@ -17,7 +17,7 @@ namespace LMS.Models
         public string? Category { get; set; }
         public int UserId { get; set; }
         public virtual User User { get; set; } //Instructor
-        public int EnrollmentCount;
+        public int EnrollmentCount { get; set; }
         // Navigation to represent the lessons in this course
         public virtual ICollection<Lesson> Lessons { get; set; }
         public string? ImageUrl { get; set; }
