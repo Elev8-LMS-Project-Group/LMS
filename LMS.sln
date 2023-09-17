@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34004.107
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMSWeb", "LMSWeb\LMSWeb.csproj", "{10EFA2E3-8905-49CE-B8E3-EDF680AF82B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMSWeb", "LMSWeb\LMSWeb.csproj", "{10EFA2E3-8905-49CE-B8E3-EDF680AF82B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.DataAccess", "LMS.DataAccess\LMS.DataAccess.csproj", "{E884D6F2-36F9-4C94-BF3C-A63A0047B8ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.DataAccess", "LMS.DataAccess\LMS.DataAccess.csproj", "{E884D6F2-36F9-4C94-BF3C-A63A0047B8ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.Models", "LMS.Models\LMS.Models.csproj", "{09E7210B-5DE1-4DF6-81A4-78BD592B7405}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Models", "LMS.Models\LMS.Models.csproj", "{09E7210B-5DE1-4DF6-81A4-78BD592B7405}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS.Utility", "LMS.Utility\LMS.Utility.csproj", "{008C3D8C-6970-4BC4-B3C4-AC0CE5875C60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LMS.Utility", "LMS.Utility\LMS.Utility.csproj", "{008C3D8C-6970-4BC4-B3C4-AC0CE5875C60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
