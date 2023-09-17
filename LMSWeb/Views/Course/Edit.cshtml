@@ -16,7 +16,7 @@
             }
             <!-- Button to add a new lesson -->
             <div>
-                <a asp-controller="Lesson" asp-action="Create" asp-route-courseId="@Model.CourseId" class="btn btn-success btn-block">Add New Lesson</a>
+                <a asp-controller="Lesson" asp-action="Upsert" asp-route-courseId="@Model.CourseId" class="btn btn-success btn-block">Add New Lesson</a>
             </div>
         </div>
         <div class="col-md-9">

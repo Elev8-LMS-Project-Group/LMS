@@ -10,8 +10,8 @@ namespace LMS.DataAccess.Repository.IRepository
     {
         ICourseRepository Course { get; }
         ILessonRepository Lesson { get; }
-
         IContentRepository Content { get; }
+        IUserRepository User { get; }
 
         void Save();
     }

@@ -157,4 +157,8 @@
     <ProjectReference Include="..\LMS.Utility\LMS.Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\course\" />
+  </ItemGroup>
+
 </Project>
