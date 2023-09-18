@@ -31,7 +31,7 @@ namespace LMSWeb.Controllers
                 var user = _context.Users.FirstOrDefault(e => e.UserName == loginUser.UserName && e.Password == loginUser.Password);
                 if (user == null)
                     return Redirect("Account"); // Invalid email or password.
-                // Defining Cookie
+                // Defining Cookies
                 List<Claim> claims = new List<Claim>();
                 claims.Add(new Claim("username", loginUser.UserName));
                 claims.Add(new Claim("password", loginUser.Password));
