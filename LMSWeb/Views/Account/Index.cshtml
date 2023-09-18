@@ -1,4 +1,4 @@
-﻿@model LMSWeb.Controllers.LoginModel
+﻿@model User
 @{
 
 }
@@ -9,7 +9,7 @@
             <figure><img src="loginimages/signin-image.jpg" alt="sing up image"></figure>
             <a href="#" class="signup-image-link">Create an account</a>
         </div>
-        <form method="POST"  asp-controller="Account" asp-action="Index" class="register-form" id="login-form">
+        <form method="POST" asp-controller="Account" asp-action="Index" class="register-form" id="login-form">
             <div class="form-group">
                 <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
                 <input asp-for="@Model.UserName" type="text" placeholder="Your Email" />

@@ -17,7 +17,7 @@ namespace LMS.Models
         public string? ImageUrl { get; set; }
         public string? VideoUrl { get; set; }
         public int LessonId { get; set; }
-        public virtual Lesson Lesson { get; set; }
+        public virtual Lesson? Lesson { get; set; }
     }
 
     public enum ContentType
