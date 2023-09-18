@@ -40,7 +40,7 @@ namespace LMSWeb.Controllers
                 var principal = new ClaimsPrincipal(claimsIdentity);
                 // Creating Cookie
                 await HttpContext.SignInAsync("user", principal);
-
+                Console.WriteLine(HttpContext.User);
                 return Redirect("Home");
             }
             catch (Exception)
@@ -54,6 +54,11 @@ namespace LMSWeb.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
         
     }
 

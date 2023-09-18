@@ -1,6 +1,7 @@
 ﻿using LMS.DataAccess.Repository.IRepository;
 using LMS.Models;
 using LMS.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -33,6 +34,7 @@ namespace LMSWeb.Controllers
             Course course = _unitOfWork.Course.Get(u => u.CourseId == courseId, includeProperties: "User,Lessons,Lessons.Contents");
             return View(course);
         }
+        //[Authorize(Roles = "Admin")]
         public IActionResult Upsert(int? id) 
         {
             CourseVM courseVM = new()

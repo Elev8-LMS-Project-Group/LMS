@@ -7,7 +7,7 @@
 namespace LMS.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialSeedAndConfig : Migration
+    public partial class TInitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -38,6 +38,7 @@ namespace LMS.DataAccess.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Category = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<int>(type: "int", nullable: false),
+                    EnrollmentCount = table.Column<int>(type: "int", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -128,8 +129,8 @@ namespace LMS.DataAccess.Migrations
 
             migrationBuilder.InsertData(
                 table: "Courses",
-                columns: new[] { "CourseId", "Category", "Description", "ImageUrl", "Title", "UserId" },
-                values: new object[] { 1, null, "Desc for sample course 1", null, "Sample Course 1", 1 });
+                columns: new[] { "CourseId", "Category", "Description", "EnrollmentCount", "ImageUrl", "Title", "UserId" },
+                values: new object[] { 1, null, "Desc for sample course 1", 1, null, "Sample Course 1", 1 });
 
             migrationBuilder.InsertData(
                 table: "Enrollments",

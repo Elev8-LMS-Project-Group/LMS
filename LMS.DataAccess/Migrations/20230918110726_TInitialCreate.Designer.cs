@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230915075839_InitialSeedAndConfig")]
-    partial class InitialSeedAndConfig
+    [Migration("20230918110726_TInitialCreate")]
+    partial class TInitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,6 +86,9 @@ namespace LMS.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("EnrollmentCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -108,6 +111,7 @@ namespace LMS.DataAccess.Migrations
                         {
                             CourseId = 1,
                             Description = "Desc for sample course 1",
+                            EnrollmentCount = 1,
                             Title = "Sample Course 1",
                             UserId = 1
                         });
