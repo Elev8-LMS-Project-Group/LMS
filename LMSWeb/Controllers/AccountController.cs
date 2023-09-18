@@ -6,16 +6,17 @@ using LMS.Models;
 using LMS.DataAccess;
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
+using LMS.DataAccess.Repository.IRepository;
 
 namespace LMSWeb.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AccountController(ApplicationDbContext context)
+        public AccountController(ApplicationDbContext context, IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
@@ -28,7 +29,8 @@ namespace LMSWeb.Controllers
         {
             try
             {
-                var user = _context.Users.FirstOrDefault(e => e.UserName == loginUser.UserName && e.Password == loginUser.Password);
+                //var user = _context.Users.FirstOrDefault(e => e.UserName == loginUser.UserName && e.Password == loginUser.Password);
+                var user = _unitOfWork.User.Get(e => e.UserName == loginUser.UserName && e.Password == loginUser.Password);
                 if (user == null)
                     return Redirect("Account"); // Invalid email or password.
                 // Defining Cookie
