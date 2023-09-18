@@ -1,4 +1,4 @@
-﻿<table class="table class=" table-info"">
+﻿<table class="table table-info">
     <thead>
         <tr>
             <th scope="col">ID</th>
@@ -8,34 +8,18 @@
             <th scope="col">Deletion</th>
         </tr>
     </thead>
-    <tbody>    
-        <tr>
-            <th scope="row">1</th>
-            <td>John</td>
-            <td>email@Doe</td>
-            <td>Student</td>
-            <td>
-                <button type="button" class="btn btn-danger">Delete</button>
-            </td>
-             
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>John</td>
-            <td>email@Doe</td>
-            <td>Student</td>
-            <td>
-                <button type="button" class="btn btn-danger">Delete</button>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row">1</th>
-            <td>John</td>
-            <td>email@Doe</td>
-            <td>Student</td>
-            <td>
-                <button type="button" class="btn btn-danger">Delete</button>
-            </td>
-        </tr>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <th scope="row">@user.UserId</th>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>
+                    <button type="button" class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
