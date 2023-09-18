@@ -8,5 +8,8 @@ namespace LMSWeb.Controllers
         {
             return View();
         }
+        public IActionResult Show_Users() {
+            return View();
+        }
     }
 }
