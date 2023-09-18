@@ -1,0 +1,33 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<div class="row">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white" style="width: 18rem;">
+            <div class="card-body text-center">
+                <h6 class="card-subtitle mb-2">Number of</h6>
+                <h5 class="card-title">Courses</h5>
+                <h3 class="text-center display-1">
+                    @await Component.InvokeAsync("CourseCount") 
+                </h3>
+                <a asp-controller="Product" asp-action="Index" class="card-link text-white">Courses</a>
+                <a asp-controller="Course" asp-action="Upsert" class="card-link text-white">New Course</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card bg-info text-white" style="width: 18rem;">
+            <div class="card-body text-center">
+                <h6 class="card-subtitle mb-2">Number of</h6>
+                <h5 class="card-title">Users</h5>
+                <h3 class="text-center display-1">
+                    @await Component.InvokeAsync("UserCount")
+                </h3>
+                <a asp-controller="User" asp-action="Index" class="card-link text-white">Users</a>
+                <a asp-controller="Account" asp-action="Kayit" class="card-link text-white">New User</a>
+            </div>
+        </div>
+    </div>
