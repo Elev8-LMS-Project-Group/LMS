@@ -108,7 +108,7 @@ namespace LMS.DataAccess.Migrations
                         {
                             CourseId = 1,
                             Description = "Desc for sample course 1",
-                            EnrollmentCount = 23,
+                            EnrollmentCount = 1,
                             Title = "Sample Course 1",
                             UserId = 1
                         });
