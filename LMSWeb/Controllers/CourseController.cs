@@ -3,6 +3,7 @@ using LMS.Models;
 using LMS.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace LMSWeb.Controllers
@@ -16,12 +17,25 @@ namespace LMSWeb.Controllers
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
         }
+        [HttpGet("Course/Index")]
         public IActionResult Index()
         {
             IEnumerable<Course> courseList = _unitOfWork.Course.GetAll("User");
             return View(courseList);
         }
+        [HttpGet("Course/Search")]
+        public IActionResult Index(string search)
+        {
+            // Retrieve the courses and apply filtering based on the search term
+            IEnumerable<Course>? courses = null;
 
+            if (!string.IsNullOrEmpty(search))
+            {
+                courses = _unitOfWork.Course.GetAllWithExp(course => course.Title.Contains(search), "User");
+            }
+
+            return View(courses);
+        }
         //TO-DO
         public IActionResult Details(int courseId)
         {
