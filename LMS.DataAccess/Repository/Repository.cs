@@ -67,10 +67,20 @@ namespace LMS.DataAccess.Repository
             }
             return query.ToList();
         }
-
         public void Remove(T entity)
         {
             dbSet.Remove(entity);
+        }
+
+        public void RemoveWithExp(Expression<Func<T, bool>> filter)
+        {
+            IQueryable<T> query = dbSet;
+            var itemsToRemove = query.Where(filter).ToList();
+
+            foreach (var item in itemsToRemove)
+            {
+                dbSet.Remove(item);
+            }
         }
     }
 }

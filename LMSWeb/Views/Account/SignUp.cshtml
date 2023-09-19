@@ -1,0 +1,51 @@
+﻿@model User
+
+
+<body>
+    <div class="main">
+        <div class="signup-content">
+            <div class="signup-form">
+                <h2 class="form-title">Sign up</h2>
+                 <form method="POST" asp-controller="Account" asp-action="SignUp" class="register-form" id="register-form">
+                    <div class="form-group">
+                        <label for="UserName"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                        <input asp-for="UserName" type="text" id="UserName" placeholder="Your Username" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Email"><i class="zmdi zmdi-email"></i></label>
+                        <input asp-for="Email" type="email" id="Email" placeholder="Your Email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Password"><i class="zmdi zmdi-lock"></i></label>
+                        <input asp-for="Password" type="password" id="Password" placeholder="Password" />
+                    </div>
+                    <div class="form-group">
+                        <label for="Role"><i class="zmdi zmdi-lock-outline"></i></label>
+                        <select asp-for="Role" id="Role" class="form-control">
+                            <option value="">Select Role</option>
+                            @foreach (var role in Enum.GetValues(typeof(UserRole)).Cast<UserRole>().Where(r => r != UserRole.Admin))
+                            {
+                                <option value="@role">@role</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Role" class="text-danger"></span>
+                    </div>
+
+                    <!-- Other form elements -->
+                    <div class="form-group form-button">
+                        <input type="submit" name="signin" id="signin" class="form-submit" value="Register" />
+                    </div>
+                </form>
+            </div>
+            <div class="signup-image">
+                <figure><img src="loginimages/signup-image.jpg" alt="sing up image"></figure>
+                <a href="#" class="signup-image-link">I am already a member</a>
+            </div>
+        </div>
+    </div>
+    </section>
+    </div>
+    <!-- JS -->
+    <script src="loginvendor/jquery/jquery.min.js"></script>
+    <script src="loginjs/main.js"></script>
+</body>

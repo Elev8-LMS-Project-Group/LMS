@@ -160,6 +160,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\ViewModelsAccount\" />
     <Folder Include="wwwroot\images\course\" />
   </ItemGroup>
 

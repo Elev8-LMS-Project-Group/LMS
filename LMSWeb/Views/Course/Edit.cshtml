@@ -7,6 +7,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
+            <input type="hidden" id="userRole" value="@User.Claims.FirstOrDefault(c => c.Type == "role")?.Value" />
+            <input type="hidden" id="userId" value="@User.Claims.FirstOrDefault(c => c.Type == "id")?.Value" />
+            <input type="hidden" id="instId" value="@Model.UserId" />
             <!-- Display Lesson titles as links -->
             @foreach (var lesson in Model.Lessons)
             {
@@ -15,9 +18,13 @@
                 </div>
             }
             <!-- Button to add a new lesson -->
-            <div>
-                <a asp-controller="Lesson" asp-action="Upsert" asp-route-courseId="@Model.CourseId" class="btn btn-success btn-block">Add New Lesson</a>
-            </div>
+            @if ((User.Identity.IsAuthenticated) && (((((User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Instructor")))) && ((Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)) == Model.UserId)) ||
+            User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Admin")))
+            {
+                <div>
+                    <a asp-controller="Lesson" asp-action="Upsert" asp-route-courseId="@Model.CourseId" class="btn btn-success btn-block">Add New Lesson</a>
+                </div>
+            }
         </div>
         <div class="col-md-9">
             <!-- Display Lesson content here -->
@@ -25,16 +32,20 @@
                 <!-- Content for the selected Lesson will be loaded here -->
             </div>
 
-            <input type="hidden" id="hiddenLessonId" value="1asd" />
+            <input type="hidden" id="hiddenLessonId" value="" />
         </div>
     </div>
 </div>
 
 @section scripts1 {
     <script>
+        var userRole = $("#userRole").val();
+        var userId = $("#userId").val();
+        var instId = $("#instId").val();
+        console.log(userRole);
+        console.log(userId);
         // Function to update the lesson content when a title is clicked
         function updateLessonContent(lessonId) {
-            console.log(lessonId);
             var hiddenLessonId = document.getElementById('hiddenLessonId');
             hiddenLessonId.value = lessonId;
 
@@ -59,20 +70,57 @@
                             var contentList = document.createElement('ul');
                             data.Contents.$values.forEach(function (content) {
                                 var contentItem = document.createElement('li');
-                                contentItem.textContent = content.ContentText;
+                                // Check the content type and create the appropriate element
+                                switch (content.ContentType) {
+                                    case 0: // Text
+                                        var textContent = document.createElement('div');
+                                        textContent.textContent = content.ContentText;
+                                        contentItem.appendChild(textContent);
+                                        break;
+                                    case 1: // Image
+                                        var imageContent = document.createElement('div');
+                                        var imageElement = document.createElement('img');
+                                        imageElement.src = content.ImageUrl;
+                                        imageElement.alt = 'Image';
+                                        imageContent.appendChild(imageElement);
+                                        contentItem.appendChild(imageContent);
+                                        break;
+                                    case 2: // Video
+                                        var videoContent = document.createElement('div');
+                                        var videoElement = document.createElement('iframe');
+                                        var videoUrl = content.VideoUrl;
+                                        if (videoUrl.includes("youtube.com")) {
+                                            var videoId = videoUrl.split('v=')[1];
+                                            var embedUrl = 'https://www.youtube.com/embed/' + videoId;
+                                            videoElement.src = embedUrl;
+                                            videoElement.width = '560';
+                                            videoElement.height = '315';
+                                            videoElement.frameborder = '0';
+                                            videoElement.allowfullscreen = true;
+                                            videoContent.appendChild(videoElement);
+                                            contentItem.appendChild(videoContent);
+                                        }
+                                        break;
+                                    default:
+                                        // Handle other content types here
+                                        break;
+                                }
                                 contentList.appendChild(contentItem);
                             });
                             lessonContentDiv.appendChild(contentList);
                         }
-                        // Generate the "Add New Content" button for the selected lesson
-                        var addContentButton = document.createElement('button');
-                        addContentButton.className = 'btn btn-primary';
-                        addContentButton.textContent = 'Add New Content';
-                        addContentButton.onclick = function () {
-                            // Redirect to the content creation page with the selected lesson ID
-                            window.location.href = '/Content/Upsert?lessonId=' + data.LessonId;
-                        };
-                        lessonContentDiv.appendChild(addContentButton);
+                        if ((userRole === "Admin") || ((userRole === "Instructor") && (userId === instId))) {
+                            // Generate the "Add New Content" button for the selected lesson
+                            var addContentButton = document.createElement('button');
+                            addContentButton.className = 'btn btn-primary';
+                            addContentButton.textContent = 'Add New Content';
+                            addContentButton.onclick = function () {
+                                // Redirect to the content creation page with the selected lesson ID
+                                window.location.href = '/Content/Upsert?lessonId=' + data.LessonId;
+                            };
+                            lessonContentDiv.appendChild(addContentButton);
+                        }
+
                     }
                 },
                 error: function (error) {

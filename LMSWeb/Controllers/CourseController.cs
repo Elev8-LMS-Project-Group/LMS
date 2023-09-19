@@ -18,10 +18,31 @@ namespace LMSWeb.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [HttpGet("Course/Index")]
-        public IActionResult Index()
+        public IActionResult Index(int? instructorId)
         {
-            IEnumerable<Course> courseList = _unitOfWork.Course.GetAll("User");
+            IEnumerable<Course> courseList;
+            if (instructorId != null)
+            {
+                courseList = _unitOfWork.Course.GetAllWithExp(c => c.UserId == instructorId, "User");
+            }
+            else
+            {
+                courseList = _unitOfWork.Course.GetAll("User");
+            }
+
             return View(courseList);
+        }
+
+        public IActionResult EnrolledUsers(int courseId)
+        {
+            IEnumerable<Enrollment> enrList = _unitOfWork.Enrollment.GetAllWithExp(e => e.CourseId == courseId, "User");
+            List<User> users = new List<User>();
+            foreach (Enrollment enrollment in enrList)
+            {
+                users.Add(enrollment.User);
+            }
+
+            return View(users);
         }
         [HttpGet("Course/Search")]
         public IActionResult Index(string search)
@@ -53,14 +74,14 @@ namespace LMSWeb.Controllers
             Course course = _unitOfWork.Course.Get(u => u.CourseId == courseId, includeProperties: "User,Lessons,Lessons.Contents");
             return View(course);
         }
-
+        //[Authorize(Roles = "Admin")]
         public IActionResult Upsert(int? id)
         {
             CourseVM courseVM = new()
             {
                 Course = new Course()
             };
-            if (id == null || id == 0)
+            if(id == null || id == 0)
             {
                 //create
                 return View(courseVM);
@@ -73,23 +94,25 @@ namespace LMSWeb.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Instructor")]
+        
         [HttpPost]
         public IActionResult Upsert(CourseVM courseVM, IFormFile? file)
         {
-            courseVM.Course.User = _unitOfWork.User.Get(u => u.UserId == Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)); //for now manually assigned at the view
+            int userId = (Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value));
+            courseVM.Course.UserId = userId;
+            courseVM.Course.User = _unitOfWork.User.Get(u => u.UserId == userId); //for now manually assigned at the view
             if (ModelState.IsValid) // User field is intentionally nullable for now can't solve the ModelState.IsValid - User field is required problem
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if (file != null)
+                if(file != null)
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string coursePath = Path.Combine(wwwRootPath, @"images\course");
 
-                    if (!string.IsNullOrEmpty(courseVM.Course.ImageUrl))
+                    if(!string.IsNullOrEmpty(courseVM.Course.ImageUrl))
                     {
                         var oldImagePath = Path.Combine(wwwRootPath, courseVM.Course.ImageUrl.TrimStart('\\'));
-                        if (System.IO.File.Exists(oldImagePath))
+                        if(System.IO.File.Exists(oldImagePath))
                         {
                             System.IO.File.Delete(oldImagePath);
                         }
@@ -102,7 +125,7 @@ namespace LMSWeb.Controllers
 
                     courseVM.Course.ImageUrl = @"\images\course\" + fileName;
                 }
-                if (courseVM.Course.CourseId == 0)
+                if(courseVM.Course.CourseId == 0)
                 {
                     _unitOfWork.Course.Add(courseVM.Course);
                 }

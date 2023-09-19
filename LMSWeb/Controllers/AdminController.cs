@@ -1,4 +1,6 @@
 ﻿using LMS.DataAccess;
+using LMS.DataAccess.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +9,12 @@ namespace LMSWeb.Controllers
     public class AdminController : Controller
     {
         private readonly IConfiguration _configuration;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AdminController(IConfiguration configuration)
+        public AdminController(IConfiguration configuration, IUnitOfWork unitOfWork)
         {
             _configuration = configuration;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
@@ -39,6 +43,8 @@ namespace LMSWeb.Controllers
 
                 if (userToDelete != null)
                 {
+                    _unitOfWork.Enrollment.RemoveWithExp(e => e.UserId == userToDelete.UserId);
+                    _unitOfWork.Save();
                     dbContext.Users.Remove(userToDelete);
                     dbContext.SaveChanges();
                 }
