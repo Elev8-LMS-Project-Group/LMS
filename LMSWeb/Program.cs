@@ -3,7 +3,6 @@ using LMS.DataAccess.Repository.IRepository;
 using LMS.DataAccess.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using LMSWeb.MyComponents;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +11,6 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContext>(
     options => options.UseSqlServer(builder.Configuration["AzureDBConnection"])
 );
-
-builder.Services.AddTransient<ContentCountViewComponent>();
-builder.Services.AddTransient<CourseCountViewComponent>();
-builder.Services.AddTransient<UserCountViewComponent>();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAuthentication()
