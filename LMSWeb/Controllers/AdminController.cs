@@ -47,6 +47,8 @@ namespace LMSWeb.Controllers
 
                 if (userToDelete != null)
                 {
+                    _unitOfWork.Enrollment.RemoveWithExp(e => e.UserId == userToDelete.UserId);
+                    _unitOfWork.Save();
                     dbContext.Users.Remove(userToDelete);
                     dbContext.SaveChanges();
                 }
