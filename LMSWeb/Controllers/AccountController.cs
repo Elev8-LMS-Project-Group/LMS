@@ -75,7 +75,6 @@ namespace LMSWeb.Controllers
                     {
                         _unitOfWork.User.Add(loginUser);
                         _unitOfWork.Save();
-
                         var newUser = _unitOfWork.User.Get(u => u.UserName == loginUser.UserName && u.Password == loginUser.Password);
                         List<Claim> claims = new List<Claim>();
                         claims.Add(new Claim("id", newUser.UserId.ToString()));
@@ -86,7 +85,6 @@ namespace LMSWeb.Controllers
                         var principal = new ClaimsPrincipal(claimsIdentity);
                         // Creating Cookie
                         await HttpContext.SignInAsync("user", principal);
-
                         TempData["success"] = "User created successfully";
                         return RedirectToAction("Index", "Home");
                     }
