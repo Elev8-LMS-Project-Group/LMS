@@ -45,6 +45,7 @@ namespace LMSWeb.Controllers
                 // Defining Cookies
                 List<Claim> claims = new List<Claim>();
                 claims.Add(new Claim("id", user.UserId.ToString()));
+                claims.Add(new Claim("role", user.Role.ToString()));
                 var claimsIdentity = new ClaimsIdentity(claims, "user");
                 var principal = new ClaimsPrincipal(claimsIdentity);
                 // Creating Cookie

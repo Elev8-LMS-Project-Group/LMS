@@ -36,7 +36,7 @@ namespace LMSWeb.Controllers
             List<Course> courses = new List<Course>();
             foreach (var courseId in courseIds)
             {
-                courses.Add(_unitOfWork.Course.Get(e => e.CourseId == courseId));
+                courses.Add(_unitOfWork.Course.Get(e => e.CourseId == courseId, "User"));
             }
 
             return View(courses);
