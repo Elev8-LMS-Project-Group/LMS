@@ -30,7 +30,6 @@ namespace LMS.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContentId"));
 
                     b.Property<string>("ContentText")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ContentType")
@@ -107,7 +106,7 @@ namespace LMS.DataAccess.Migrations
                         new
                         {
                             CourseId = 1,
-                            Description = "Desc for sample course 1",
+                            Description = "Desc for sample course 1 - created by TestAdmin",
                             EnrollmentCount = 1,
                             Title = "Sample Course 1",
                             UserId = 1
@@ -221,7 +220,7 @@ namespace LMS.DataAccess.Migrations
                             UserId = 1,
                             Password = "Test",
                             Role = 0,
-                            UserName = "Test"
+                            UserName = "TestAdmin"
                         });
                 });
 

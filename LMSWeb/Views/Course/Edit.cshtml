@@ -25,7 +25,7 @@
                 <!-- Content for the selected Lesson will be loaded here -->
             </div>
 
-            <input type="hidden" id="hiddenLessonId" value="1asd" />
+            <input type="hidden" id="hiddenLessonId" value="" />
         </div>
     </div>
 </div>
@@ -59,7 +59,41 @@
                             var contentList = document.createElement('ul');
                             data.Contents.$values.forEach(function (content) {
                                 var contentItem = document.createElement('li');
-                                contentItem.textContent = content.ContentText;
+                                // Check the content type and create the appropriate element
+                                switch (content.ContentType) {
+                                    case 0: // Text
+                                        var textContent = document.createElement('div');
+                                        textContent.textContent = content.ContentText;
+                                        contentItem.appendChild(textContent);
+                                        break;
+                                    case 1: // Image
+                                        var imageContent = document.createElement('div');
+                                        var imageElement = document.createElement('img');
+                                        imageElement.src = content.ImageUrl;
+                                        imageElement.alt = 'Image';
+                                        imageContent.appendChild(imageElement);
+                                        contentItem.appendChild(imageContent);
+                                        break;
+                                    case 2: // Video
+                                        var videoContent = document.createElement('div');
+                                        var videoElement = document.createElement('iframe');
+                                        var videoUrl = content.VideoUrl;
+                                        if (videoUrl.includes("youtube.com")) {
+                                            var videoId = videoUrl.split('v=')[1];
+                                            var embedUrl = 'https://www.youtube.com/embed/' + videoId;
+                                            videoElement.src = embedUrl;
+                                            videoElement.width = '560';
+                                            videoElement.height = '315';
+                                            videoElement.frameborder = '0';
+                                            videoElement.allowfullscreen = true;
+                                            videoContent.appendChild(videoElement);
+                                            contentItem.appendChild(videoContent);
+                                        }
+                                        break;
+                                    default:
+                                        // Handle other content types here
+                                        break;
+                                }
                                 contentList.appendChild(contentItem);
                             });
                             lessonContentDiv.appendChild(contentList);

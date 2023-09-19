@@ -1,0 +1,29 @@
+﻿<table class="table table-info">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">UserName</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Deletion</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <th scope="row">@user.UserId</th>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>
+                    <form method="post" asp-controller="Admin" asp-action="DeleteUser" asp-route-userId="@user.UserId">
+                        <button type="submit" class="btn btn-danger border form-control">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

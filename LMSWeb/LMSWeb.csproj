@@ -161,6 +161,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\course\" />
+    <Folder Include="wwwroot\images\content\" />
   </ItemGroup>
 
 </Project>
