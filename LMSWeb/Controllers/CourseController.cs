@@ -53,14 +53,14 @@ namespace LMSWeb.Controllers
             Course course = _unitOfWork.Course.Get(u => u.CourseId == courseId, includeProperties: "User,Lessons,Lessons.Contents");
             return View(course);
         }
-        //[Authorize(Roles = "Admin")]
-        public IActionResult Upsert(int? id) 
+
+        public IActionResult Upsert(int? id)
         {
             CourseVM courseVM = new()
             {
                 Course = new Course()
             };
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 //create
                 return View(courseVM);
@@ -81,15 +81,15 @@ namespace LMSWeb.Controllers
             if (ModelState.IsValid) // User field is intentionally nullable for now can't solve the ModelState.IsValid - User field is required problem
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
-                if(file != null)
+                if (file != null)
                 {
                     string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     string coursePath = Path.Combine(wwwRootPath, @"images\course");
 
-                    if(!string.IsNullOrEmpty(courseVM.Course.ImageUrl))
+                    if (!string.IsNullOrEmpty(courseVM.Course.ImageUrl))
                     {
                         var oldImagePath = Path.Combine(wwwRootPath, courseVM.Course.ImageUrl.TrimStart('\\'));
-                        if(System.IO.File.Exists(oldImagePath))
+                        if (System.IO.File.Exists(oldImagePath))
                         {
                             System.IO.File.Delete(oldImagePath);
                         }
@@ -102,7 +102,7 @@ namespace LMSWeb.Controllers
 
                     courseVM.Course.ImageUrl = @"\images\course\" + fileName;
                 }
-                if(courseVM.Course.CourseId == 0)
+                if (courseVM.Course.CourseId == 0)
                 {
                     _unitOfWork.Course.Add(courseVM.Course);
                 }
