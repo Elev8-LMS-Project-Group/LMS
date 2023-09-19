@@ -66,7 +66,7 @@ namespace LMSWeb.Controllers
                 var user = _unitOfWork.User.Get(e => e.UserName == loginUser.UserName);
                 if (user != null)
                 {
-                    return Redirect("Account"); // This user is already exists.
+                    return View("Kayit"); // This user is already exists.
                 }
                 else
                 {

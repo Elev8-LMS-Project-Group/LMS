@@ -18,8 +18,8 @@
                 </div>
             }
             <!-- Button to add a new lesson -->
-            @if (((((User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Instructor")))) && ((Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)) == Model.UserId)) ||
-            User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Admin") )
+            @if ((User.Identity.IsAuthenticated) && (((((User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Instructor")))) && ((Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)) == Model.UserId)) ||
+            User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Admin") ) )
             {
                 <div>
                     <a asp-controller="Lesson" asp-action="Upsert" asp-route-courseId="@Model.CourseId" class="btn btn-success btn-block">Add New Lesson</a>

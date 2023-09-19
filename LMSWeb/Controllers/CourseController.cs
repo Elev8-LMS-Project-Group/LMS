@@ -18,10 +18,31 @@ namespace LMSWeb.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [HttpGet("Course/Index")]
-        public IActionResult Index()
+        public IActionResult Index(int? instructorId)
         {
-            IEnumerable<Course> courseList = _unitOfWork.Course.GetAll("User");
+            IEnumerable<Course> courseList;
+            if (instructorId != null)
+            {
+                courseList = _unitOfWork.Course.GetAllWithExp(c => c.UserId == instructorId, "User");
+            }
+            else
+            {
+                courseList = _unitOfWork.Course.GetAll("User");
+            }
+            
             return View(courseList);
+        }
+        
+        public IActionResult EnrolledUsers(int courseId)
+        {
+            IEnumerable<Enrollment> enrList = _unitOfWork.Enrollment.GetAllWithExp(e => e.CourseId == courseId, "User");
+            List<User> users = new List<User>();
+            foreach (Enrollment enrollment in enrList)
+            {
+                users.Add(enrollment.User);
+            }
+
+            return View(users);
         }
         [HttpGet("Course/Search")]
         public IActionResult Index(string search)
