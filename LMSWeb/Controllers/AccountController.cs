@@ -37,9 +37,6 @@ namespace LMSWeb.Controllers
                 // Defining Cookies
                 List<Claim> claims = new List<Claim>();
                 claims.Add(new Claim("id", user.UserId.ToString()));
-                claims.Add(new Claim("username", user.UserName));
-                claims.Add(new Claim("password", user.Password));
-                claims.Add(new Claim("role", user.Role.ToString()));
                 var claimsIdentity = new ClaimsIdentity(claims, "user");
                 var principal = new ClaimsPrincipal(claimsIdentity);
                 // Creating Cookie
@@ -53,13 +50,13 @@ namespace LMSWeb.Controllers
             }
         }
 
-        public IActionResult Kayit()
+        public IActionResult SignUp()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Kayit([FromForm] User loginUser)
+        public async Task<IActionResult> SignUp([FromForm] User loginUser)
         {
             try
             {
@@ -74,22 +71,12 @@ namespace LMSWeb.Controllers
                     {
                         _unitOfWork.User.Add(loginUser);
                         _unitOfWork.Save();
-                        var newUser = _unitOfWork.User.Get(u => u.UserName == loginUser.UserName && u.Password == loginUser.Password);
-                        List<Claim> claims = new List<Claim>();
-                        claims.Add(new Claim("id", newUser.UserId.ToString()));
-                        claims.Add(new Claim("username", newUser.UserName));
-                        claims.Add(new Claim("password", newUser.Password));
-                        claims.Add(new Claim("role", newUser.Role.ToString()));
-                        var claimsIdentity = new ClaimsIdentity(claims, "user");
-                        var principal = new ClaimsPrincipal(claimsIdentity);
-                        // Creating Cookie
-                        await HttpContext.SignInAsync("user", principal);
                         TempData["success"] = "User created successfully";
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "Account");
                     }
                     else
                     {
-                        return View("Kayit");
+                        return View("SignUp");
                     }
                     
                 }
