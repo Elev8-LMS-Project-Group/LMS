@@ -1,4 +1,5 @@
 ﻿using LMS.DataAccess.Repository.IRepository;
+using LMS.Models;
 using LMS.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -26,6 +27,19 @@ namespace LMSWeb.Controllers
             vm.Password = user.Password;
             vm.Role = user.Role.ToString();
             return View(vm);
+        }
+
+        public IActionResult MyCourses()
+        {
+            int id = int.Parse(HttpContext.User.FindFirstValue("id"));
+            var courseIds = _unitOfWork.Enrollment.GetAllWithExp(e => e.UserId == id).Select(e => e.CourseId);
+            List<Course> courses = new List<Course>();
+            foreach (var courseId in courseIds)
+            {
+                courses.Add(_unitOfWork.Course.Get(e => e.CourseId == courseId));
+            }
+
+            return View(courses);
         }
     }
 }
