@@ -73,9 +73,8 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Profile</a>
                         <div class="dropdown-menu fade-down m-0">
-                            <a class="nav-item nav-link" asp-area="" asp-controller="Profile" asp-action="Index">Adi</a>
-                            <a class="nav-item nav-link" asp-area="" asp-controller="Courses" asp-action="Index">My Courses</a>
-                            <a class="nav-item nav-link" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a>
+                            <a class="nav-item nav-link" asp-controller="Profile" asp-action="Index" style="margin-left: 15px;">My Profile</a>
+                            <a class="nav-item nav-link" asp-controller="Profile" asp-action="MyCourses" style="margin-left: 15px;">My Courses</a>
                         </div>
                     </div>
                 }
@@ -92,7 +91,7 @@
             }
             else
             {
-                <a asp-area="" asp-controller="Account" asp-action="Kayit" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
+                <a asp-area="" asp-controller="Account" asp-action="SignUp" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Join Now<i class="fa fa-arrow-right ms-3"></i></a>
             }
         </div>
     </nav>
