@@ -7,7 +7,7 @@
 namespace LMS.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class TInitialCreate : Migration
+    public partial class LastInitMig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -106,7 +106,7 @@ namespace LMS.DataAccess.Migrations
                     ContentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ContentType = table.Column<int>(type: "int", nullable: false),
-                    ContentText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContentText = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     VideoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LessonId = table.Column<int>(type: "int", nullable: false)
@@ -125,12 +125,12 @@ namespace LMS.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "Email", "Password", "Role", "UserName" },
-                values: new object[] { 1, null, "Test", 0, "Test" });
+                values: new object[] { 1, null, "Test", 0, "TestAdmin" });
 
             migrationBuilder.InsertData(
                 table: "Courses",
                 columns: new[] { "CourseId", "Category", "Description", "EnrollmentCount", "ImageUrl", "Title", "UserId" },
-                values: new object[] { 1, null, "Desc for sample course 1", 1, null, "Sample Course 1", 1 });
+                values: new object[] { 1, null, "Desc for sample course 1 - created by TestAdmin", 1, null, "Sample Course 1", 1 });
 
             migrationBuilder.InsertData(
                 table: "Enrollments",

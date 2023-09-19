@@ -41,7 +41,7 @@ namespace LMS.DataAccess
                 new User
                 {
                     UserId = 1,
-                    UserName = "Test",
+                    UserName = "TestAdmin",
                     Password = "Test",
                     Role = UserRole.Admin
                 } 
@@ -52,7 +52,7 @@ namespace LMS.DataAccess
                 {
                     CourseId = 1,
                     Title = "Sample Course 1",
-                    Description = "Desc for sample course 1",
+                    Description = "Desc for sample course 1 - created by TestAdmin",
                     UserId = 1,
                     EnrollmentCount = 1
                 }    

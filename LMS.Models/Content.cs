@@ -12,8 +12,7 @@ namespace LMS.Models
         public int ContentId { get; set; }
         [Required]
         public ContentType ContentType { get; set; }
-        [Required]
-        public string ContentText { get; set; }
+        public string? ContentText { get; set; }
         public string? ImageUrl { get; set; }
         public string? VideoUrl { get; set; }
         public int LessonId { get; set; }
