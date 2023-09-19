@@ -31,6 +31,7 @@ namespace LMSWeb.Controllers
         {
             try
             {
+                //var user = _context.Users.FirstOrDefault(e => e.UserName == loginUser.UserName && e.Password == loginUser.Password);
                 var user = _unitOfWork.User.Get(e => e.UserName == loginUser.UserName && e.Password == loginUser.Password);
                 if (user == null)
                     return Redirect("Account"); // Invalid username or password.
