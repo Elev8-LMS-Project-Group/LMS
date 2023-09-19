@@ -35,19 +35,23 @@ namespace LMSWeb.Controllers
             }
         }
 
-        
-        [HttpPost]
-        public IActionResult DeleteUser(int userId)
+
+        public IActionResult DeleteUser(int id)
         {
-            var user = _unitOfWork.User.Get(x => x.UserId == userId);
-            if (user != null)
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
+            .Options;
+            using (var dbContext = new ApplicationDbContext(options))
             {
-                _unitOfWork.User.Remove(user);
-                _unitOfWork.Save();
+                var userToDelete = dbContext.Users.Find(id);
+
+                if (userToDelete != null)
+                {
+                    dbContext.Users.Remove(userToDelete);
+                    dbContext.SaveChanges();
+                }
             }
-            var userList = _unitOfWork.User.GetAll();
-            return RedirectToAction("Show_Users", "Admin", new { userList = userList });
-            
+            return RedirectToAction("Show_Users");
         }
     }
 }

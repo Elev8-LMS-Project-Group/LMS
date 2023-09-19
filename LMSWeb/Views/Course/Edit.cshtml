@@ -7,6 +7,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-3">
+            <input type="hidden" id="userRole" value="@User.Claims.FirstOrDefault(c => c.Type == "role")?.Value" />
+            <input type="hidden" id="userId" value="@User.Claims.FirstOrDefault(c => c.Type == "id")?.Value" />
+            <input type="hidden" id="instId" value="@Model.UserId" />
             <!-- Display Lesson titles as links -->
             @foreach (var lesson in Model.Lessons)
             {
@@ -15,9 +18,14 @@
                 </div>
             }
             <!-- Button to add a new lesson -->
-            <div>
-                <a asp-controller="Lesson" asp-action="Upsert" asp-route-courseId="@Model.CourseId" class="btn btn-success btn-block">Add New Lesson</a>
-            </div>
+            @if (((((User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Instructor")))) && ((Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)) == Model.UserId)) ||
+            User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Admin") )
+            {
+                <div>
+                    <a asp-controller="Lesson" asp-action="Upsert" asp-route-courseId="@Model.CourseId" class="btn btn-success btn-block">Add New Lesson</a>
+                </div>
+            }
+            
         </div>
         <div class="col-md-9">
             <!-- Display Lesson content here -->
@@ -32,9 +40,13 @@
 
 @section scripts1 {
     <script>
+        var userRole = $("#userRole").val();
+        var userId = $("#userId").val();
+        var instId = $("#instId").val();
+        console.log(userRole);
+        console.log(userId);
         // Function to update the lesson content when a title is clicked
         function updateLessonContent(lessonId) {
-            console.log(lessonId);
             var hiddenLessonId = document.getElementById('hiddenLessonId');
             hiddenLessonId.value = lessonId;
 
@@ -98,15 +110,20 @@
                             });
                             lessonContentDiv.appendChild(contentList);
                         }
-                        // Generate the "Add New Content" button for the selected lesson
-                        var addContentButton = document.createElement('button');
-                        addContentButton.className = 'btn btn-primary';
-                        addContentButton.textContent = 'Add New Content';
-                        addContentButton.onclick = function () {
-                            // Redirect to the content creation page with the selected lesson ID
-                            window.location.href = '/Content/Upsert?lessonId=' + data.LessonId;
-                        };
-                        lessonContentDiv.appendChild(addContentButton);
+                        if ((userRole === "Admin") || ((userRole === "Instructor") && (userId === instId)))
+                        {
+                            // Generate the "Add New Content" button for the selected lesson
+                            var addContentButton = document.createElement('button');
+                            addContentButton.className = 'btn btn-primary';
+                            addContentButton.textContent = 'Add New Content';
+
+                            addContentButton.onclick = function () {
+                                // Redirect to the content creation page with the selected lesson ID
+                                window.location.href = '/Content/Upsert?lessonId=' + data.LessonId;
+                            };
+                            lessonContentDiv.appendChild(addContentButton);
+                        }
+                        
                     }
                 },
                 error: function (error) {
