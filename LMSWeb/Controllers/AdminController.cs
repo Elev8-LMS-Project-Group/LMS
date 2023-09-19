@@ -27,5 +27,23 @@ namespace LMSWeb.Controllers
                 return View(userList);
             }
         }
+
+        public IActionResult DeleteUser(int id)
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+            .UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
+            .Options;
+            using (var dbContext = new ApplicationDbContext(options))
+            {
+                var userToDelete = dbContext.Users.Find(id);
+
+                if (userToDelete != null)
+                {
+                    dbContext.Users.Remove(userToDelete);
+                    dbContext.SaveChanges();
+                }
+            }
+            return RedirectToAction("Show_Users");
+        }
     }
 }

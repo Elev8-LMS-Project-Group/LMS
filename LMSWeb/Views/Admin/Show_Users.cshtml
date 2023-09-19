@@ -17,7 +17,7 @@
                 <td>@user.Email</td>
                 <td>@user.Role</td>
                 <td>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <a href="@Url.Action("DeleteUser", "Admin", new { id = user.UserId })" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }
