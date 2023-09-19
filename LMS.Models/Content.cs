@@ -24,6 +24,7 @@ namespace LMS.Models
     {
         Text,
         Image,
-        Video
+        Video,
+        DefaultT
     }
 }

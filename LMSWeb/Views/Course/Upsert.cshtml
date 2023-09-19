@@ -17,7 +17,7 @@
                     <div class="border p-3">
                         @*<div asp-validation-summary="ModelOnly"></div>*@
                         <!-- Manually assign the UserId property -->
-                        <input asp-for="Course.UserId" value="@User.Claims" hidden />
+                        <input asp-for="Course.UserId" value="@Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)" hidden />
                         <input asp-for="Course.EnrollmentCount" value="0" hidden />
                         <div class="form-floating py-2 col-12">
                             <input asp-for="Course.Title" class="form-control border-0 shadow" />

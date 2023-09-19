@@ -1,6 +1,6 @@
 ﻿@model ContentVM
 
-<div class="card shadow border-0 my-4">
+@* <div class="card shadow border-0 my-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
@@ -13,6 +13,17 @@
             <input asp-for="Content.ContentType" value="0" hidden />
             <input asp-for="Content.ContentId" hidden />
             <input asp-for="Content.LessonId" hidden />
+
+            <div class="form-group">
+                <label for="ContentType"><i class="zmdi zmdi-lock-outline"></i></label>
+                <select asp-for="Content.ContentType" id="Role" class="form-control">
+                    <option value="">Select Role</option>
+                    @foreach (var type in Enum.GetValues(typeof(ContentType)).Cast<ContentType>())
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </select>
+            </div>
 
             <div class="form-floating py-2 col-12">
                 <input asp-for="Content.ContentText" class="form-control border-0 shadow" />
@@ -37,4 +48,93 @@
             </div>
         </form>
     </div>
+</div> *@
+
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">@(Model.Content.ContentId != 0 ? "Update" : "Create") Content</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-4">
+        <form method="post" class="row" enctype="multipart/form-data">
+            <input asp-for="Content.ContentId" hidden />
+            <input asp-for="Content.LessonId" hidden />
+
+            <div class="form-group">
+                <label for="Content.ContentType"><i class="zmdi zmdi-lock-outline"></i></label>
+                <select asp-for="Content.ContentType" id="ContentType" class="form-control">
+                    <option value="">Select Content Type</option>
+                    @foreach (var type in Enum.GetValues(typeof(ContentType)).Cast<ContentType>().Where(r => r != ContentType.DefaultT))
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </select>
+                <span asp-validation-for="Content.ContentType" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating py-2 col-12">
+                <input asp-for="Content.ContentText" class="form-control border-0 shadow" />
+                <label asp-for="Content.ContentText" class="ms-2"></label>
+                <span asp-validation-for="Content.ContentText" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating py-2 col-12" id="imageUpload" style="display:none;">
+                <!-- Input for Image Upload -->
+                <input type="file" name="file" class="form-control border-0 shadow" />
+                <label asp-for="Content.ImageUrl" class="ms-2"></label>
+                <span asp-validation-for="Content.ImageUrl" class="text-danger"></span>
+            </div>
+
+            <div class="form-floating py-2 col-12" id="videoUrl" style="display:none;">
+                <!-- Input for Video URL -->
+                <input asp-for="Content.VideoUrl" class="form-control border-0 shadow" />
+                <label asp-for="Content.VideoUrl" class="ms-2"></label>
+                <span asp-validation-for="Content.VideoUrl" class="text-danger"></span>
+            </div>
+
+            <!-- Other form fields specific to Lesson model -->
+
+            <div class="row pt-2">
+                <div class="col-6 col-md-3">
+                    <button type="submit" class="btn btn-primary form-control">
+                        @(Model.Content.ContentId != 0 ? "Update" : "Create")
+                    </button>
+                </div>
+                <div class="col-6 col-md-3">
+                    <a asp-controller="Course" asp-action="Details" asp-route-courseId="@Model.Content.Lesson.CourseId"
+                       class="btn btn-outline-primary border form-control">
+                        Back to Course
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
+
+
+@section scripts1 {
+    <script>
+        $(document).ready(function () {
+            // Handle ContentType change event
+            $("#ContentType").change(function () {
+                var selectedContentType = $(this).val();
+                console.log(selectedContentType); // Add this line for debugging
+
+                // Show/hide form fields based on selected ContentType
+                if (selectedContentType === "Image") {
+                    $("#imageUpload").show();
+                    $("#videoUrl").hide();
+                } else if (selectedContentType === "Video") {
+                    $("#imageUpload").hide();
+                    $("#videoUrl").show();
+                } else {
+                    $("#imageUpload").hide();
+                    $("#videoUrl").hide();
+                }
+            });
+        });
+    </script>
+}
