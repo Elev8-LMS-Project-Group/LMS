@@ -3,6 +3,7 @@ using LMS.Models;
 using LMS.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace LMSWeb.Controllers
@@ -16,16 +17,34 @@ namespace LMSWeb.Controllers
             _unitOfWork = unitOfWork;
             _webHostEnvironment = webHostEnvironment;
         }
+        [HttpGet("Course/Index")]
         public IActionResult Index()
         {
             IEnumerable<Course> courseList = _unitOfWork.Course.GetAll("User");
             return View(courseList);
         }
+        [HttpGet("Course/Search")]
+        public IActionResult Index(string search)
+        {
+            // Retrieve the courses and apply filtering based on the search term
+            IEnumerable<Course>? courses = null;
 
-        //TO-DO
+            if (!string.IsNullOrEmpty(search))
+            {
+                courses = _unitOfWork.Course.GetAllWithExp(course => course.Title.Contains(search), "User");
+            }
+
+            return View(courses);
+        }
+        
         public IActionResult Details(int courseId)
         {
             Course course = _unitOfWork.Course.Get(u => u.CourseId == courseId, includeProperties: "User");
+            var userId = Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id")?.Value);
+            var enrollment = _unitOfWork.Enrollment.Get(e => (e.UserId == userId) && e.CourseId == courseId);
+            if (enrollment != null) ViewBag.IsEnrolled = true;
+
+
             return View(course);
         }
 
@@ -54,10 +73,11 @@ namespace LMSWeb.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin, Instructor")]
         [HttpPost]
         public IActionResult Upsert(CourseVM courseVM, IFormFile? file)
         {
-            courseVM.Course.User = _unitOfWork.User.Get(u => u.UserId == courseVM.Course.UserId); //for now manually assigned at the view
+            courseVM.Course.User = _unitOfWork.User.Get(u => u.UserId == Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)); //for now manually assigned at the view
             if (ModelState.IsValid) // User field is intentionally nullable for now can't solve the ModelState.IsValid - User field is required problem
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
@@ -99,6 +119,35 @@ namespace LMSWeb.Controllers
             {
                 return View(courseVM);
             }
+        }
+
+        [HttpPost]
+        public IActionResult Enroll(int userId, int courseId)
+        {
+            // Check if the user is already enrolled in the course
+            var existingEnrollment = _unitOfWork.Enrollment.Get(e => e.UserId == userId && e.CourseId == courseId);
+
+            if (existingEnrollment == null)
+            {
+                // User is not enrolled, create a new enrollment
+                var enrollment = new Enrollment
+                {
+                    UserId = userId,
+                    CourseId = courseId
+                };
+
+                _unitOfWork.Enrollment.Add(enrollment);
+                _unitOfWork.Save();
+
+                TempData["success"] = "Enrollment successful"; // Optionally set a success message
+            }
+            else
+            {
+                // User is already enrolled, handle accordingly (you can set a message or take other actions)
+                TempData["info"] = "User is already enrolled in this course"; // Optionally set an info message
+            }
+
+            return RedirectToAction("Details", "Course", new { courseId = courseId });
         }
 
         public IActionResult Remove()

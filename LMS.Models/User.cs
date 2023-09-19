@@ -15,8 +15,9 @@ namespace LMS.Models
         public string? Email { get; set; }
         [Required]
         public string Password { get; set; }
+        [Required]
         public UserRole Role { get; set; }
-        public virtual ICollection<Enrollment> Enrollments { get; set; }
+        public virtual ICollection<Enrollment>? Enrollments { get; set; }
     }
 
     public enum UserRole

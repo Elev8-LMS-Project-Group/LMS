@@ -7,6 +7,8 @@ using LMS.DataAccess;
 using Microsoft.AspNetCore.Authorization;
 using System.Diagnostics;
 using LMS.DataAccess.Repository.IRepository;
+using LMS.Models.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 
 namespace LMSWeb.Controllers
 {
@@ -14,7 +16,7 @@ namespace LMSWeb.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public AccountController(ApplicationDbContext context, IUnitOfWork unitOfWork)
+        public AccountController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -25,24 +27,25 @@ namespace LMSWeb.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index([FromForm] LoginModel loginUser)
+        public async Task<IActionResult> Index([FromForm] User loginUser)
         {
             try
             {
                 //var user = _context.Users.FirstOrDefault(e => e.UserName == loginUser.UserName && e.Password == loginUser.Password);
                 var user = _unitOfWork.User.Get(e => e.UserName == loginUser.UserName && e.Password == loginUser.Password);
                 if (user == null)
-                    return Redirect("Account"); // Invalid email or password.
+                    return Redirect("Account"); // Invalid username or password.
                 // Defining Cookies
                 List<Claim> claims = new List<Claim>();
-                claims.Add(new Claim("username", loginUser.UserName));
-                claims.Add(new Claim("password", loginUser.Password));
+                claims.Add(new Claim("id", user.UserId.ToString()));
+                claims.Add(new Claim("username", user.UserName));
+                claims.Add(new Claim("password", user.Password));
                 claims.Add(new Claim("role", user.Role.ToString()));
                 var claimsIdentity = new ClaimsIdentity(claims, "user");
                 var principal = new ClaimsPrincipal(claimsIdentity);
                 // Creating Cookie
                 await HttpContext.SignInAsync("user", principal);
-                Console.WriteLine(HttpContext.User);
+                
                 return Redirect("Home");
             }
             catch (Exception)
@@ -56,18 +59,53 @@ namespace LMSWeb.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Kayit([FromForm] User loginUser)
+        {
+            try
+            {
+                var user = _unitOfWork.User.Get(e => e.UserName == loginUser.UserName);
+                if (user != null)
+                {
+                    return Redirect("Account"); // This user is already exists.
+                }
+                else
+                {
+                    if (ModelState.IsValid) // User field is intentionally nullable for now can't solve the ModelState.IsValid - User field is required problem
+                    {
+                        _unitOfWork.User.Add(loginUser);
+                        _unitOfWork.Save();
+                        var newUser = _unitOfWork.User.Get(u => u.UserName == loginUser.UserName && u.Password == loginUser.Password);
+                        List<Claim> claims = new List<Claim>();
+                        claims.Add(new Claim("id", newUser.UserId.ToString()));
+                        claims.Add(new Claim("username", newUser.UserName));
+                        claims.Add(new Claim("password", newUser.Password));
+                        claims.Add(new Claim("role", newUser.Role.ToString()));
+                        var claimsIdentity = new ClaimsIdentity(claims, "user");
+                        var principal = new ClaimsPrincipal(claimsIdentity);
+                        // Creating Cookie
+                        await HttpContext.SignInAsync("user", principal);
+                        TempData["success"] = "User created successfully";
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return View("Kayit");
+                    }
+                    
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync();
+            if(User.Identity.IsAuthenticated)
+                await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home");
-        }
-        
+        }  
     }
-
-    public class LoginModel
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-    }
-
 }
