@@ -16,11 +16,15 @@ namespace LMSWeb.Controllers
 
         public IActionResult Index()
         {
+            int id = int.Parse(HttpContext.User.FindFirstValue("id"));
+            var user = _unitOfWork.User.Get(e => e.UserId == id);
+
             UserVM vm = new UserVM();
-            vm.UserId = int.Parse(HttpContext.User.FindFirstValue("id"));
-            vm.UserName = HttpContext.User.FindFirstValue("username");
-            vm.Password = HttpContext.User.FindFirstValue("password");
-            vm.Role = HttpContext.User.FindFirstValue("role");
+            vm.UserId = user.UserId;
+            vm.UserName = user.UserName;
+            vm.Email = user.Email;
+            vm.Password = user.Password;
+            vm.Role = user.Role.ToString();
             return View(vm);
         }
     }
