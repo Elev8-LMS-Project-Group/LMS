@@ -31,20 +31,21 @@ namespace LMSWeb.Controllers
         {
             try
             {
+                //var user = _context.Users.FirstOrDefault(e => e.UserName == loginUser.UserName && e.Password == loginUser.Password);
                 var user = _unitOfWork.User.Get(e => e.UserName == loginUser.UserName && e.Password == loginUser.Password);
                 if (user == null)
                     return Redirect("Account"); // Invalid username or password.
                 // Defining Cookies
                 List<Claim> claims = new List<Claim>();
-                claims.Add(new Claim("id", loginUser.UserId.ToString()));
-                claims.Add(new Claim("username", loginUser.UserName));
-                claims.Add(new Claim("password", loginUser.Password));
+                claims.Add(new Claim("id", user.UserId.ToString()));
+                claims.Add(new Claim("username", user.UserName));
+                claims.Add(new Claim("password", user.Password));
                 claims.Add(new Claim("role", user.Role.ToString()));
                 var claimsIdentity = new ClaimsIdentity(claims, "user");
                 var principal = new ClaimsPrincipal(claimsIdentity);
                 // Creating Cookie
                 await HttpContext.SignInAsync("user", principal);
-                Console.WriteLine(HttpContext.User);
+                
                 return Redirect("Home");
             }
             catch (Exception)
@@ -74,24 +75,26 @@ namespace LMSWeb.Controllers
                     {
                         _unitOfWork.User.Add(loginUser);
                         _unitOfWork.Save();
-                        TempData["success"] = "User created successfully";
-                        // Defining Cookies
+
+                        var newUser = _unitOfWork.User.Get(u => u.UserName == loginUser.UserName && u.Password == loginUser.Password);
                         List<Claim> claims = new List<Claim>();
-                        claims.Add(new Claim("username", loginUser.UserName));
-                        claims.Add(new Claim("password", loginUser.Password));
-                        claims.Add(new Claim("role", user.Role.ToString()));
+                        claims.Add(new Claim("id", newUser.UserId.ToString()));
+                        claims.Add(new Claim("username", newUser.UserName));
+                        claims.Add(new Claim("password", newUser.Password));
+                        claims.Add(new Claim("role", newUser.Role.ToString()));
                         var claimsIdentity = new ClaimsIdentity(claims, "user");
                         var principal = new ClaimsPrincipal(claimsIdentity);
                         // Creating Cookie
                         await HttpContext.SignInAsync("user", principal);
-                        Console.WriteLine(HttpContext.User);
+
+                        TempData["success"] = "User created successfully";
                         return RedirectToAction("Index", "Home");
                     }
                     else
                     {
                         return View("Kayit");
                     }
-
+                    
                 }
             }
             catch (Exception)
@@ -102,9 +105,9 @@ namespace LMSWeb.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            if (User.Identity.IsAuthenticated)
+            if(User.Identity.IsAuthenticated)
                 await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home");
-        }
+        }  
     }
 }

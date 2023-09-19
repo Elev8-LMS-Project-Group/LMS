@@ -70,7 +70,7 @@
                         addContentButton.textContent = 'Add New Content';
                         addContentButton.onclick = function () {
                             // Redirect to the content creation page with the selected lesson ID
-                            window.location.href = '/Content/Create?lessonId=' + data.LessonId;
+                            window.location.href = '/Content/Upsert?lessonId=' + data.LessonId;
                         };
                         lessonContentDiv.appendChild(addContentButton);
                     }

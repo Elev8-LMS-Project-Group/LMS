@@ -1,7 +1,7 @@
-﻿using LMS.DataAccess.Repository.IRepository;
+using LMS.Models.ViewModels;
 using LMS.Models;
 using Microsoft.AspNetCore.Mvc;
-using LMS.Models.ViewModels;
+using LMS.DataAccess.Repository.IRepository;
 
 namespace LMSWeb.Controllers
 {
