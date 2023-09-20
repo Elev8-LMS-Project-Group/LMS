@@ -54,33 +54,19 @@
                 <a class="nav-item nav-link" asp-area="" asp-controller="Course" asp-action="Index">Courses</a>
                 
 
-                <a href="contact.html" class="nav-item nav-link">Contact</a>
+                
 
                 @if (User.Claims.FirstOrDefault(c => c.Type == "role")?.Value == "Admin")
                 {
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu fade-down m-0">
-                            <a class="nav-item nav-link" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            <a href="404.html" class="dropdown-item">404 Page</a>
-                        </div>
-                    </div>
+                            <a class="nav-item nav-link" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>        
                 }
 
                 @if (User.Claims.FirstOrDefault(c => c.Type == "role")?.Value == "Instructor" || User.Claims.FirstOrDefault(c => c.Type == "role")?.Value == "Admin")
                 {
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Instructor Pages</a>
-                        <div class="dropdown-menu fade-down m-0">
                             <a class="nav-item nav-link" asp-area="" asp-controller="Course" asp-action="Index"
                                asp-route-instructorId="@Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)">
                                 Instructor Courses
                             </a>
-                            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
-                            <a href="404.html" class="dropdown-item">404 Page</a>
-                        </div>
-                    </div>
                 }
 
                 @if (User.Identity.IsAuthenticated)
