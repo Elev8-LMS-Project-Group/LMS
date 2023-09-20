@@ -11,17 +11,22 @@
             <input type="hidden" id="userId" value="@User.Claims.FirstOrDefault(c => c.Type == "id")?.Value" />
             <input type="hidden" id="instId" value="@Model.UserId" />
             <!-- Display Lesson titles as links -->
-            @foreach (var lesson in Model.Lessons)
-            {
-                <div class="lesson-title">
-                    <a href="#" data-lessonid="@lesson.LessonId" onclick="updateLessonContent('@lesson.LessonId')">@lesson.Title</a>
-                </div>
-            }
+            <div class="mb-4">
+                <h4 class="mb-3">Lesson Titles</h4>
+                <ul class="list-group">
+                    @foreach (var lesson in Model.Lessons)
+                    {
+                        <li class="list-group-item">
+                            <a href="#" data-lessonid="@lesson.LessonId" onclick="updateLessonContent('@lesson.LessonId')">@lesson.Title</a>
+                        </li>
+                    }
+                </ul>
+            </div>
             <!-- Button to add a new lesson -->
             @if ((User.Identity.IsAuthenticated) && (((((User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Instructor")))) && ((Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)) == Model.UserId)) ||
             User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Admin") ) )
             {
-                <div>
+                <div class="mb-4">
                     <a asp-controller="Lesson" asp-action="Upsert" asp-route-courseId="@Model.CourseId" class="btn btn-success btn-block">Add New Lesson</a>
                 </div>
             }
