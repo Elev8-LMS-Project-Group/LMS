@@ -159,7 +159,8 @@ namespace LMSWeb.Controllers
                     UserId = userId,
                     CourseId = courseId
                 };
-
+                var course = _unitOfWork.Course.Get(c => c.CourseId == courseId);
+                course.EnrollmentCount++;
                 _unitOfWork.Enrollment.Add(enrollment);
                 _unitOfWork.Save();
 
@@ -174,9 +175,17 @@ namespace LMSWeb.Controllers
             return RedirectToAction("Details", "Course", new { courseId = courseId });
         }
 
-        public IActionResult Remove()
+        public IActionResult Remove(int courseId)
         {
-            return View();
+            var enrollments = _unitOfWork.Enrollment.GetAllWithExp(e => e.CourseId == courseId);
+            foreach (var enrollment in enrollments)
+            {
+                _unitOfWork.Enrollment.Remove(enrollment);
+            }
+            var courseToDelete = _unitOfWork.Course.Get(c => c.CourseId == courseId);
+            _unitOfWork.Course.Remove(courseToDelete);
+            _unitOfWork.Save();
+            return RedirectToAction("Index", "Home");
         }
     }
 }
