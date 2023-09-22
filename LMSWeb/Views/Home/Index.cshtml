@@ -1,12 +1,14 @@
-﻿@{
+﻿@model User
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <!-- Carousel Start -->
 @if (User.Identity.IsAuthenticated)
 {
-    <div class="row">ASDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDASDADA</div>
+    <div class="row" style="margin-left: 10px;">Welcome, enjoy your journey ! </div>
 }
+
 <div class="container-fluid p-0 mb-5">
     <div class="owl-carousel header-carousel position-relative">
         <div class="owl-carousel-item position-relative">
@@ -17,9 +19,9 @@
                         <div class="col-sm-10 col-lg-8">
                             <h5 class="text-primary text-uppercase mb-3 animated slideInDown">Best Online Courses</h5>
                             <h1 class="display-3 text-white animated slideInDown">The Best Online Learning Platform</h1>
-                            <p class="fs-5 text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea sanctus eirmod elitr.</p>
-                            <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                            <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
+                            <p class="fs-5 text-white mb-4 pb-2">For every student,every classroom.Real results....</p>
+                            <a href="/About" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
+                            <a href="/Account/Kayit" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
                         </div>
                     </div>
                 </div>
@@ -32,10 +34,11 @@
                     <div class="row justify-content-start">
                         <div class="col-sm-10 col-lg-8">
                             <h5 class="text-primary text-uppercase mb-3 animated slideInDown">Best Online Courses</h5>
+                            <h5 class="text-primary text-uppercase mb-3 animated slideInDown"> We’re a nonprofit with the mission to provide a free, world-class education for anyone, anywhere.</h5>
                             <h1 class="display-3 text-white animated slideInDown">Get Educated Online From Your Home</h1>
-                            <p class="fs-5 text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea sanctus eirmod elitr.</p>
-                            <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                            <a href="" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
+                            @* <p class="fs-5 text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea sanctus eirmod elitr.</p> *@
+                            <a href="/About" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
+                            <a href="/Account/Kayit" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Join Now</a>
                         </div>
                     </div>
                 </div>
@@ -53,7 +56,10 @@
                     <div class="p-4">
                         <i class="fa fa-3x fa-graduation-cap text-primary mb-4"></i>
                         <h5 class="mb-3">Skilled Instructors</h5>
-                        <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                        <p>
+                            Teachers can identify gaps in their students’ understanding, tailor instruction, and meet the needs of every student.
+                           We empower teachers to support their entire classroom.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -62,7 +68,9 @@
                     <div class="p-4">
                         <i class="fa fa-3x fa-globe text-primary mb-4"></i>
                         <h5 class="mb-3">Online Classes</h5>
-                        <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                        <p>
+                            Students practice at their own pace, first filling in gaps in their understanding and then accelerating their learning.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -71,7 +79,7 @@
                     <div class="p-4">
                         <i class="fa fa-3x fa-home text-primary mb-4"></i>
                         <h5 class="mb-3">Home Projects</h5>
-                        <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                        <p> Every child deserves the chance to learn. We support and reinforce learning with home projects.</p>
                     </div>
                 </div>
             </div>
@@ -80,7 +88,7 @@
                     <div class="p-4">
                         <i class="fa fa-3x fa-book-open text-primary mb-4"></i>
                         <h5 class="mb-3">Book Library</h5>
-                        <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
+                        <p>Created by experts, eLEARNİNG’s library of trusted practice and lessons covers math, science, and more. Always free for learners and teachers.</p>
                     </div>
                 </div>
             </div>
@@ -122,7 +130,7 @@
                         <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>International Certificate</p>
                     </div>
                 </div>
-                <a class="btn btn-primary py-3 px-5 mt-2" href="">Read More</a>
+                <a class="btn btn-primary py-3 px-5 mt-2" href="/About">Read More</a>
             </div>
         </div>
     </div>

@@ -1,0 +1,17 @@
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\bin\Debug\net7.0\LMS.DataAccess.deps.json
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\bin\Debug\net7.0\LMS.DataAccess.runtimeconfig.json
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\bin\Debug\net7.0\LMS.DataAccess.dll
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\bin\Debug\net7.0\LMS.DataAccess.pdb
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\bin\Debug\net7.0\LMS.Models.dll
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\bin\Debug\net7.0\LMS.Models.pdb
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\obj\Debug\net7.0\LMS.DataAccess.csproj.AssemblyReference.cache
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\obj\Debug\net7.0\LMS.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\obj\Debug\net7.0\LMS.DataAccess.AssemblyInfoInputs.cache
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\obj\Debug\net7.0\LMS.DataAccess.AssemblyInfo.cs
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\obj\Debug\net7.0\LMS.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\obj\Debug\net7.0\LMS.DataAccess.csproj.CopyComplete
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\obj\Debug\net7.0\LMS.DataAccess.dll
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\obj\Debug\net7.0\refint\LMS.DataAccess.dll
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\obj\Debug\net7.0\LMS.DataAccess.pdb
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\obj\Debug\net7.0\LMS.DataAccess.genruntimeconfig.cache
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.DataAccess\obj\Debug\net7.0\ref\LMS.DataAccess.dll

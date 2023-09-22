@@ -6,13 +6,13 @@
 <body>
     <div class="container">
         <div class="signin-image">
-            <figure><img src="loginimages/signin-image.jpg" alt="sing up image"></figure>
-            <a href="#" class="signup-image-link">Create an account</a>
+            <figure><img src="loginimages/signin-image.jpg" alt="sing in image"></figure>
+            <a href="/Account/Kayit" class="signup-image-link">Create an account</a>
         </div>
         <form method="POST"  asp-controller="Account" asp-action="Index" class="register-form" id="login-form">
             <div class="form-group">
-                <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                <input asp-for="@Model.UserName" type="text" placeholder="Your Email" />
+                <label for="e-mail"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                <input asp-for="@Model.Email" type="text" placeholder="Your Email" />
             </div>
             <div class="form-group">
                 <label for="password"><i class="zmdi zmdi-lock"></i></label>
@@ -21,6 +21,11 @@
             <div class="form-group">
                 <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
                 <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+            </div>
+            <div class="form-group">
+                <label>
+
+                </label>
             </div>
             <div class="form-group form-button">
                 <input type="submit" name="signin" id="signin" class="form-submit" value="Log in" />

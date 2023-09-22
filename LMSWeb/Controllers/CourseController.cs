@@ -73,11 +73,14 @@ namespace LMSWeb.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Instructor")]
+        
         [HttpPost]
         public IActionResult Upsert(CourseVM courseVM, IFormFile? file)
         {
-            courseVM.Course.User = _unitOfWork.User.Get(u => u.UserId == Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)); //for now manually assigned at the view
+            int userId = (Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value));
+            courseVM.Course.UserId = userId;
+            courseVM.Course.User = _unitOfWork.User.Get(u => u.UserId == userId); //for now manually assigned at the view
+            
             if (ModelState.IsValid) // User field is intentionally nullable for now can't solve the ModelState.IsValid - User field is required problem
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;

@@ -15,7 +15,7 @@ namespace LMSWeb.Controllers
 
         public IActionResult Index()
         {
-            //var usernameClaim = User.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
+            //var nameClaim = User.Claims.FirstOrDefault(c => c.Type == "role")?.Value;
             return View();
         }
 

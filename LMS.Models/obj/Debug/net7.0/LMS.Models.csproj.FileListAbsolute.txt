@@ -1,0 +1,14 @@
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\bin\Debug\net7.0\LMS.Models.deps.json
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\bin\Debug\net7.0\LMS.Models.runtimeconfig.json
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\bin\Debug\net7.0\LMS.Models.dll
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\bin\Debug\net7.0\LMS.Models.pdb
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\obj\Debug\net7.0\LMS.Models.csproj.AssemblyReference.cache
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\obj\Debug\net7.0\LMS.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\obj\Debug\net7.0\LMS.Models.AssemblyInfoInputs.cache
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\obj\Debug\net7.0\LMS.Models.AssemblyInfo.cs
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\obj\Debug\net7.0\LMS.Models.csproj.CoreCompileInputs.cache
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\obj\Debug\net7.0\LMS.Models.dll
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\obj\Debug\net7.0\refint\LMS.Models.dll
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\obj\Debug\net7.0\LMS.Models.pdb
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\obj\Debug\net7.0\LMS.Models.genruntimeconfig.cache
+C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Models\obj\Debug\net7.0\ref\LMS.Models.dll

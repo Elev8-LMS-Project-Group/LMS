@@ -30,7 +30,6 @@ namespace LMS.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContentId"));
 
                     b.Property<string>("ContentText")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ContentType")
@@ -107,7 +106,7 @@ namespace LMS.DataAccess.Migrations
                         new
                         {
                             CourseId = 1,
-                            Description = "Desc for sample course 1",
+                            Description = "Desc for sample course 1 - created by TestAdmin",
                             EnrollmentCount = 1,
                             Title = "Sample Course 1",
                             UserId = 1
@@ -198,6 +197,7 @@ namespace LMS.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("Email")
+                        
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -207,7 +207,7 @@ namespace LMS.DataAccess.Migrations
                     b.Property<int>("Role")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -219,9 +219,10 @@ namespace LMS.DataAccess.Migrations
                         new
                         {
                             UserId = 1,
-                            Password = "Test",
+                            Password = "iHDiGxN55UA82RwZm/gEQi44u99W6dH742Ru/PH4NNLFoiaJulm/Jd7fYN3sXxQJ",
                             Role = 0,
-                            UserName = "Test"
+                            Email = "test@email.com",
+                            Name = "TestAdmin"
                         });
                 });
 
