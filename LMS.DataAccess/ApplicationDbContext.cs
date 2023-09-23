@@ -12,7 +12,7 @@ namespace LMS.DataAccess
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<User> Users { get; set; }
@@ -20,6 +20,7 @@ namespace LMS.DataAccess
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Content> Contents { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<UserLessonProgress> UserLessonProgresses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,71 +38,27 @@ namespace LMS.DataAccess
                 .HasForeignKey(e => e.CourseId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<UserLessonProgress>()
+                .HasOne(e => e.User)
+                .WithMany(e => e.UserLessonProgresses)
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<UserLessonProgress>()
+                .HasOne(e => e.Lesson)
+                .WithMany(e => e.UserLessonProgresses)
+                .HasForeignKey(e => e.LessonId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
                     UserId = 1,
-                    UserName = "Test",
-                    Password = "Test",
+                    UserName = "TestAdmin",
+                    Password = "VnnDbCurBp5BSsZO15UwzA==;SywRr43i6tihyK+IHEAmdjsEbZZR96yRlW3DSod8j/A=", //Test
                     Role = UserRole.Admin
                 } 
             );
-
-            modelBuilder.Entity<Course>().HasData(
-                new Course
-                {
-                    CourseId = 1,
-                    Title = "Sample Course 1",
-                    Description = "Desc for sample course 1",
-                    UserId = 1,
-                    EnrollmentCount = 1
-                }    
-            );
-
-            modelBuilder.Entity<Lesson>().HasData(
-                new Lesson
-                {
-                    LessonId = 1,
-                    Title = "Lesson 1",
-                    Description = "Description for Lesson 1",
-                    CourseId = 1
-                },
-                new Lesson
-                {
-                    LessonId = 2,
-                    Title = "Lesson 2",
-                    Description = "Description for Lesson 2",
-                    CourseId = 1
-                }
-            );
-
-            modelBuilder.Entity<Content>().HasData(
-                new Content
-                {
-                    ContentId = 1,
-                    ContentType = ContentType.Text,
-                    ContentText = "Sample text content for Lesson 1",
-                    LessonId = 1
-                },
-                new Content
-                {
-                    ContentId = 2,
-                    ContentType = ContentType.Text,
-                    ContentText = "Sample text content for Lesson 2",
-                    LessonId = 2
-                }
-            );
-
-            modelBuilder.Entity<Enrollment>().HasData(
-                new Enrollment
-                {
-                    EnrollmentId = 1,
-                    UserId = 1,
-                    CourseId = 1
-                }    
-            );
-
-
         }
     }
 }

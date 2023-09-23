@@ -13,6 +13,7 @@ namespace LMS.DataAccess.Repository.IRepository
         IContentRepository Content { get; }
         IUserRepository User { get; }
         IEnrollmentRepository Enrollment { get; }
+        IUserLessonProgressRepository UserLessonProgress { get; }
 
         void Save();
     }

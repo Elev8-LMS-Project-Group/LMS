@@ -18,10 +18,31 @@ namespace LMSWeb.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
         [HttpGet("Course/Index")]
-        public IActionResult Index()
+        public IActionResult Index(int? instructorId)
         {
-            IEnumerable<Course> courseList = _unitOfWork.Course.GetAll("User");
+            IEnumerable<Course> courseList;
+            if (instructorId != null)
+            {
+                courseList = _unitOfWork.Course.GetAllWithExp(c => c.UserId == instructorId, "User");
+            }
+            else
+            {
+                courseList = _unitOfWork.Course.GetAll("User");
+            }
+            
             return View(courseList);
+        }
+        
+        public IActionResult EnrolledUsers(int courseId)
+        {
+            IEnumerable<Enrollment> enrList = _unitOfWork.Enrollment.GetAllWithExp(e => e.CourseId == courseId, "User");
+            List<User> users = new List<User>();
+            foreach (Enrollment enrollment in enrList)
+            {
+                users.Add(enrollment.User);
+            }
+
+            return View(users);
         }
         [HttpGet("Course/Search")]
         public IActionResult Index(string search)
@@ -50,7 +71,7 @@ namespace LMSWeb.Controllers
 
         public IActionResult Edit(int courseId)
         {
-            Course course = _unitOfWork.Course.Get(u => u.CourseId == courseId, includeProperties: "User,Lessons,Lessons.Contents");
+            Course course = _unitOfWork.Course.Get(u => u.CourseId == courseId, includeProperties: "User,Lessons,Lessons.Contents,Lessons.UserLessonProgresses,Enrollments");
             return View(course);
         }
         //[Authorize(Roles = "Admin")]
@@ -73,11 +94,14 @@ namespace LMSWeb.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Instructor")]
+        
         [HttpPost]
         public IActionResult Upsert(CourseVM courseVM, IFormFile? file)
         {
-            courseVM.Course.User = _unitOfWork.User.Get(u => u.UserId == Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)); //for now manually assigned at the view
+            int userId = (Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value));
+            courseVM.Course.UserId = userId;
+            courseVM.Course.User = _unitOfWork.User.Get(u => u.UserId == userId); //for now manually assigned at the view
+            
             if (ModelState.IsValid) // User field is intentionally nullable for now can't solve the ModelState.IsValid - User field is required problem
             {
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
@@ -135,8 +159,21 @@ namespace LMSWeb.Controllers
                     UserId = userId,
                     CourseId = courseId
                 };
-
+                var course = _unitOfWork.Course.Get(c => c.CourseId == courseId);
+                course.EnrollmentCount++;
                 _unitOfWork.Enrollment.Add(enrollment);
+                //kurstaki tüm dersleri al her ders için userlessonprogress oluşturup false çek
+                var courseLessons = _unitOfWork.Lesson.GetAllWithExp(l => l.CourseId == courseId);
+                foreach (var courseLesson in courseLessons)
+                {
+                    UserLessonProgress ulProgress = new UserLessonProgress()
+                    {
+                        UserId = userId,
+                        LessonId = courseLesson.LessonId,
+                        IsCompleted = false
+                    };
+                    _unitOfWork.UserLessonProgress.Add(ulProgress);
+                }
                 _unitOfWork.Save();
 
                 TempData["success"] = "Enrollment successful"; // Optionally set a success message
@@ -150,9 +187,17 @@ namespace LMSWeb.Controllers
             return RedirectToAction("Details", "Course", new { courseId = courseId });
         }
 
-        public IActionResult Remove()
+        public IActionResult Remove(int courseId)
         {
-            return View();
+            var enrollments = _unitOfWork.Enrollment.GetAllWithExp(e => e.CourseId == courseId);
+            foreach (var enrollment in enrollments)
+            {
+                _unitOfWork.Enrollment.Remove(enrollment);
+            }
+            var courseToDelete = _unitOfWork.Course.Get(c => c.CourseId == courseId);
+            _unitOfWork.Course.Remove(courseToDelete);
+            _unitOfWork.Save();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

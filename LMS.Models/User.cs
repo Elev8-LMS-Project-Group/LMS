@@ -18,6 +18,7 @@ namespace LMS.Models
         [Required]
         public UserRole Role { get; set; }
         public virtual ICollection<Enrollment>? Enrollments { get; set; }
+        public virtual ICollection<UserLessonProgress>? UserLessonProgresses { get; set; }
     }
 
     public enum UserRole

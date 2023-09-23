@@ -2,12 +2,10 @@
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace LMS.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class TInitialCreate : Migration
+    public partial class InitialULPMig : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -106,7 +104,7 @@ namespace LMS.DataAccess.Migrations
                     ContentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ContentType = table.Column<int>(type: "int", nullable: false),
-                    ContentText = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ContentText = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     VideoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     LessonId = table.Column<int>(type: "int", nullable: false)
@@ -122,38 +120,37 @@ namespace LMS.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserLessonProgresses",
+                columns: table => new
+                {
+                    UserLessonProgressId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    LessonId = table.Column<int>(type: "int", nullable: false),
+                    IsCompleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLessonProgresses", x => x.UserLessonProgressId);
+                    table.ForeignKey(
+                        name: "FK_UserLessonProgresses_Lessons_LessonId",
+                        column: x => x.LessonId,
+                        principalTable: "Lessons",
+                        principalColumn: "LessonId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserLessonProgresses_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "Email", "Password", "Role", "UserName" },
-                values: new object[] { 1, null, "Test", 0, "Test" });
-
-            migrationBuilder.InsertData(
-                table: "Courses",
-                columns: new[] { "CourseId", "Category", "Description", "EnrollmentCount", "ImageUrl", "Title", "UserId" },
-                values: new object[] { 1, null, "Desc for sample course 1", 1, null, "Sample Course 1", 1 });
-
-            migrationBuilder.InsertData(
-                table: "Enrollments",
-                columns: new[] { "EnrollmentId", "CourseId", "UserId" },
-                values: new object[] { 1, 1, 1 });
-
-            migrationBuilder.InsertData(
-                table: "Lessons",
-                columns: new[] { "LessonId", "CourseId", "Description", "Title" },
-                values: new object[,]
-                {
-                    { 1, 1, "Description for Lesson 1", "Lesson 1" },
-                    { 2, 1, "Description for Lesson 2", "Lesson 2" }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Contents",
-                columns: new[] { "ContentId", "ContentText", "ContentType", "ImageUrl", "LessonId", "VideoUrl" },
-                values: new object[,]
-                {
-                    { 1, "Sample text content for Lesson 1", 0, null, 1, null },
-                    { 2, "Sample text content for Lesson 2", 0, null, 2, null }
-                });
+                values: new object[] { 1, null, "VnnDbCurBp5BSsZO15UwzA==;SywRr43i6tihyK+IHEAmdjsEbZZR96yRlW3DSod8j/A=", 0, "TestAdmin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Contents_LessonId",
@@ -179,6 +176,16 @@ namespace LMS.DataAccess.Migrations
                 name: "IX_Lessons_CourseId",
                 table: "Lessons",
                 column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLessonProgresses_LessonId",
+                table: "UserLessonProgresses",
+                column: "LessonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLessonProgresses_UserId",
+                table: "UserLessonProgresses",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -189,6 +196,9 @@ namespace LMS.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Enrollments");
+
+            migrationBuilder.DropTable(
+                name: "UserLessonProgresses");
 
             migrationBuilder.DropTable(
                 name: "Lessons");

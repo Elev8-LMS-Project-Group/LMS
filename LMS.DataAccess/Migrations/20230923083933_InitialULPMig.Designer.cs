@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230918110726_TInitialCreate")]
-    partial class TInitialCreate
+    [Migration("20230923083933_InitialULPMig")]
+    partial class InitialULPMig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,6 @@ namespace LMS.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContentId"));
 
                     b.Property<string>("ContentText")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ContentType")
@@ -53,22 +52,6 @@ namespace LMS.DataAccess.Migrations
                     b.HasIndex("LessonId");
 
                     b.ToTable("Contents");
-
-                    b.HasData(
-                        new
-                        {
-                            ContentId = 1,
-                            ContentText = "Sample text content for Lesson 1",
-                            ContentType = 0,
-                            LessonId = 1
-                        },
-                        new
-                        {
-                            ContentId = 2,
-                            ContentText = "Sample text content for Lesson 2",
-                            ContentType = 0,
-                            LessonId = 2
-                        });
                 });
 
             modelBuilder.Entity("LMS.Models.Course", b =>
@@ -105,16 +88,6 @@ namespace LMS.DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Courses");
-
-                    b.HasData(
-                        new
-                        {
-                            CourseId = 1,
-                            Description = "Desc for sample course 1",
-                            EnrollmentCount = 1,
-                            Title = "Sample Course 1",
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("LMS.Models.Enrollment", b =>
@@ -138,14 +111,6 @@ namespace LMS.DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Enrollments");
-
-                    b.HasData(
-                        new
-                        {
-                            EnrollmentId = 1,
-                            CourseId = 1,
-                            UserId = 1
-                        });
                 });
 
             modelBuilder.Entity("LMS.Models.Lesson", b =>
@@ -174,22 +139,6 @@ namespace LMS.DataAccess.Migrations
                     b.HasIndex("CourseId");
 
                     b.ToTable("Lessons");
-
-                    b.HasData(
-                        new
-                        {
-                            LessonId = 1,
-                            CourseId = 1,
-                            Description = "Description for Lesson 1",
-                            Title = "Lesson 1"
-                        },
-                        new
-                        {
-                            LessonId = 2,
-                            CourseId = 1,
-                            Description = "Description for Lesson 2",
-                            Title = "Lesson 2"
-                        });
                 });
 
             modelBuilder.Entity("LMS.Models.User", b =>
@@ -222,10 +171,36 @@ namespace LMS.DataAccess.Migrations
                         new
                         {
                             UserId = 1,
-                            Password = "Test",
+                            Password = "VnnDbCurBp5BSsZO15UwzA==;SywRr43i6tihyK+IHEAmdjsEbZZR96yRlW3DSod8j/A=",
                             Role = 0,
-                            UserName = "Test"
+                            UserName = "TestAdmin"
                         });
+                });
+
+            modelBuilder.Entity("LMS.Models.UserLessonProgress", b =>
+                {
+                    b.Property<int>("UserLessonProgressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserLessonProgressId"));
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("LessonId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserLessonProgressId");
+
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserLessonProgresses");
                 });
 
             modelBuilder.Entity("LMS.Models.Content", b =>
@@ -280,6 +255,25 @@ namespace LMS.DataAccess.Migrations
                     b.Navigation("Course");
                 });
 
+            modelBuilder.Entity("LMS.Models.UserLessonProgress", b =>
+                {
+                    b.HasOne("LMS.Models.Lesson", "Lesson")
+                        .WithMany("UserLessonProgresses")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("LMS.Models.User", "User")
+                        .WithMany("UserLessonProgresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Lesson");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("LMS.Models.Course", b =>
                 {
                     b.Navigation("Enrollments");
@@ -290,11 +284,15 @@ namespace LMS.DataAccess.Migrations
             modelBuilder.Entity("LMS.Models.Lesson", b =>
                 {
                     b.Navigation("Contents");
+
+                    b.Navigation("UserLessonProgresses");
                 });
 
             modelBuilder.Entity("LMS.Models.User", b =>
                 {
                     b.Navigation("Enrollments");
+
+                    b.Navigation("UserLessonProgresses");
                 });
 #pragma warning restore 612, 618
         }
