@@ -10,6 +10,8 @@
             <input type="hidden" id="userRole" value="@User.Claims.FirstOrDefault(c => c.Type == "role")?.Value" />
             <input type="hidden" id="userId" value="@User.Claims.FirstOrDefault(c => c.Type == "id")?.Value" />
             <input type="hidden" id="instId" value="@Model.UserId" />
+            <input type="hidden" id="courseId" value="@Model.CourseId" />
+            <input type="hidden" id="isEnrolled" value="@Model.Enrollments.Any(e => e.CourseId == Model.CourseId && e.UserId == (Convert.ToInt32(@User.Claims.FirstOrDefault(c => c.Type == "id")?.Value))).ToString()" />
             <!-- Display Lesson titles as links -->
             <div class="mb-4">
                 <h4 class="mb-3">Lesson Titles</h4>
@@ -18,6 +20,22 @@
                     {
                         <li class="list-group-item">
                             <a href="#" data-lessonid="@lesson.LessonId" onclick="updateLessonContent('@lesson.LessonId')">@lesson.Title</a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                @if (lesson.UserLessonProgresses.Any(ulp => ulp.UserId == Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value) && ulp.IsCompleted))
+                                {
+                                    <i class="bi bi-check-circle-fill justify-content-end"></i>
+                                }
+                                else if (lesson.UserLessonProgresses.Any(ulp => ulp.UserId == Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value) && !ulp.IsCompleted))
+                                {
+                                    <i class="bi bi-check-circle justify-content-end"></i>
+                                }
+                            }
+                            @if ((User.Identity.IsAuthenticated) && (((((User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Instructor")))) && ((Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)) == Model.UserId)) ||
+                          User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Admin")))
+                            {
+                                <a asp-controller="Lesson" asp-action="Delete" asp-route-lessonId="@lesson.LessonId"><i class="bi bi-trash-fill justify-content-end"></i></a>
+                            }
                         </li>
                     }
                 </ul>
@@ -48,8 +66,9 @@
         var userRole = $("#userRole").val();
         var userId = $("#userId").val();
         var instId = $("#instId").val();
-        console.log(userRole);
-        console.log(userId);
+        var courseId = $("#courseId").val();
+        var isEnrolled = $("#isEnrolled").val();
+        console.log(isEnrolled)//del
         // Function to update the lesson content when a title is clicked
         function updateLessonContent(lessonId) {
             var hiddenLessonId = document.getElementById('hiddenLessonId');
@@ -128,7 +147,32 @@
                             };
                             lessonContentDiv.appendChild(addContentButton);
                         }
-                        
+                        if (isEnrolled === "True")
+                        {
+                            var lessonProgress = data.UserLessonProgresses.$values;
+                            if (lessonProgress[0].IsCompleted === false) {
+                                var completeButton = document.createElement('button');
+                                completeButton.className = 'btn btn-success';
+                                completeButton.textContent = 'Complete';
+                                completeButton.onclick = function () {
+                                    // Send an AJAX request to mark the lesson as completed
+                                    $.ajax({
+                                        url: '/Lesson/CompleteLesson', // Replace with the actual URL and controller action
+                                        type: 'POST',
+                                        data: { lessonId: data.LessonId },
+                                        success: function () {
+                                            // Reload the content to show the completion status
+                                            var url = '/Course/Edit?courseId=' + courseId;
+                                            window.location.href = url;
+                                        },
+                                        error: function (error) {
+                                            console.error(error);
+                                        }
+                                    });
+                                };
+                                lessonContentDiv.appendChild(completeButton);
+                            }
+                        }
                     }
                 },
                 error: function (error) {

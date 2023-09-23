@@ -71,7 +71,7 @@ namespace LMSWeb.Controllers
 
         public IActionResult Edit(int courseId)
         {
-            Course course = _unitOfWork.Course.Get(u => u.CourseId == courseId, includeProperties: "User,Lessons,Lessons.Contents");
+            Course course = _unitOfWork.Course.Get(u => u.CourseId == courseId, includeProperties: "User,Lessons,Lessons.Contents,Lessons.UserLessonProgresses,Enrollments");
             return View(course);
         }
         //[Authorize(Roles = "Admin")]
@@ -162,6 +162,18 @@ namespace LMSWeb.Controllers
                 var course = _unitOfWork.Course.Get(c => c.CourseId == courseId);
                 course.EnrollmentCount++;
                 _unitOfWork.Enrollment.Add(enrollment);
+                //kurstaki tüm dersleri al her ders için userlessonprogress oluşturup false çek
+                var courseLessons = _unitOfWork.Lesson.GetAllWithExp(l => l.CourseId == courseId);
+                foreach (var courseLesson in courseLessons)
+                {
+                    UserLessonProgress ulProgress = new UserLessonProgress()
+                    {
+                        UserId = userId,
+                        LessonId = courseLesson.LessonId,
+                        IsCompleted = false
+                    };
+                    _unitOfWork.UserLessonProgress.Add(ulProgress);
+                }
                 _unitOfWork.Save();
 
                 TempData["success"] = "Enrollment successful"; // Optionally set a success message
