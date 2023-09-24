@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "IBXG7xMsf5t7NI7ShpiP5/lzXbbg/FCU+1phjuhJeRU=",
+  "Hash": "97eevJ8I1ZETs57LUHZQyE8GhG7mUuZkzA8p3ArvPJs=",
   "Source": "LMSWeb",
   "BasePath": "_content/LMSWeb",
   "Mode": "Default",
@@ -187,6 +187,23 @@
       "OriginalItemSpec": "wwwroot\\images\\course\\0a9a9a76-6b99-419c-aa55-3cd0f18944fa.png"
     },
     {
+      "Identity": "C:\\Users\\Nilay\\source\\repos\\LMS\\LMSWeb\\wwwroot\\images\\course\\92642f6d-8896-4fd1-ac4b-3128ee676686.jpg",
+      "SourceId": "LMSWeb",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Nilay\\source\\repos\\LMS\\LMSWeb\\wwwroot\\",
+      "BasePath": "_content/LMSWeb",
+      "RelativePath": "images/course/92642f6d-8896-4fd1-ac4b-3128ee676686.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\course\\92642f6d-8896-4fd1-ac4b-3128ee676686.jpg"
+    },
+    {
       "Identity": "C:\\Users\\Nilay\\source\\repos\\LMS\\LMSWeb\\wwwroot\\images\\course\\9706414c-2b1d-4ee5-a390-e05ebe92882a.png",
       "SourceId": "LMSWeb",
       "SourceType": "Discovered",
@@ -202,6 +219,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\course\\9706414c-2b1d-4ee5-a390-e05ebe92882a.png"
+    },
+    {
+      "Identity": "C:\\Users\\Nilay\\source\\repos\\LMS\\LMSWeb\\wwwroot\\images\\course\\99a53b52-701d-415a-86d0-d2401a3bbf67.mp4",
+      "SourceId": "LMSWeb",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Nilay\\source\\repos\\LMS\\LMSWeb\\wwwroot\\",
+      "BasePath": "_content/LMSWeb",
+      "RelativePath": "images/course/99a53b52-701d-415a-86d0-d2401a3bbf67.mp4",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\images\\course\\99a53b52-701d-415a-86d0-d2401a3bbf67.mp4"
     },
     {
       "Identity": "C:\\Users\\Nilay\\source\\repos\\LMS\\LMSWeb\\wwwroot\\images\\course\\9a13a40d-7535-4f23-887d-2b2c21e844fd.png",

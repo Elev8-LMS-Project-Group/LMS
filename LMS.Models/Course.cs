@@ -21,6 +21,8 @@ namespace LMS.Models
         // Navigation to represent the lessons in this course
         public virtual ICollection<Lesson>? Lessons { get; set; }
         public string? ImageUrl { get; set; }
+
+
         public virtual ICollection<Enrollment>? Enrollments { get; set; }
     }
 }
