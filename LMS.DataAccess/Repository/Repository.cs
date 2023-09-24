@@ -30,7 +30,7 @@ namespace LMS.DataAccess.Repository
             query = query.Where(filter);
             if (!string.IsNullOrEmpty(includeProperties))
             {
-                foreach(var includeProp in includeProperties
+                foreach (var includeProp in includeProperties
                         .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(includeProp);
@@ -72,5 +72,17 @@ namespace LMS.DataAccess.Repository
         {
             dbSet.Remove(entity);
         }
+        ///////eklenen
+        public void RemoveWithExp(Expression<Func<T, bool>> filter)
+        {
+            IQueryable<T> query = dbSet;
+            var itemsToRemove = query.Where(filter).ToList();
+
+            foreach (var item in itemsToRemove)
+            {
+                dbSet.Remove(item);
+            }
+        }
     }
 }
+

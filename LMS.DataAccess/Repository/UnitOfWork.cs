@@ -15,6 +15,8 @@ namespace LMS.DataAccess.Repository
         public IContentRepository Content { get; private set; }
         public IUserRepository User { get; private set; }
         public IEnrollmentRepository Enrollment { get; private set; }
+
+        public IUserLessonProgressRepository UserLessonProgress { get; private set; }
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
@@ -23,6 +25,7 @@ namespace LMS.DataAccess.Repository
             Content = new ContentRepository(_db);
             User = new UserRepository(_db);
             Enrollment = new EnrollmentRepository(_db);
+            UserLessonProgress = new UserLessonProgressRepository(_db);
         }
 
         public void Save()

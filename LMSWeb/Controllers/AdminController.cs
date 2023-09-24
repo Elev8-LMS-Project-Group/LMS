@@ -16,12 +16,12 @@ namespace LMSWeb.Controllers
             _configuration = configuration;
             _unitOfWork = unitOfWork;
         }
-        
+
         public IActionResult Index()
         {
             return View();
         }
-        
+
         public IActionResult Show_Users()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -35,7 +35,7 @@ namespace LMSWeb.Controllers
             }
         }
 
-        
+
         [HttpPost]
         public IActionResult DeleteUser(int userId)
         {
@@ -47,7 +47,35 @@ namespace LMSWeb.Controllers
             }
             var userList = _unitOfWork.User.GetAll();
             return RedirectToAction("Show_Users", "Admin", new { userList = userList });
-            
+
         }
+
+
+
+        ////eklenen
+        //public IActionResult DeleteUser(int id)
+        //{
+        //    var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+        //    .UseSqlServer(_configuration.GetConnectionString("DefaultConnection"))
+        //    .Options;
+        //    using (var dbContext = new ApplicationDbContext(options))
+        //    {
+        //        var userToDelete = dbContext.Users.Find(id);
+
+        //        if (userToDelete != null)
+        //        {
+        //            _unitOfWork.Enrollment.RemoveWithExp(e => e.UserId == userToDelete.UserId);
+        //            _unitOfWork.Save();
+        //            dbContext.Users.Remove(userToDelete);
+        //            dbContext.SaveChanges();
+        //        }
+        //    }
+        //    return RedirectToAction("Show_Users");
+        //}
+
+
+
+
+
     }
 }

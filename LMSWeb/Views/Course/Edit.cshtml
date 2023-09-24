@@ -5,40 +5,72 @@
 }
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-3">
-            <!-- Display Lesson titles as links -->
-            @foreach (var lesson in Model.Lessons)
-            {
-                <div class="lesson-title">
-                    <a href="#" data-lessonid="@lesson.LessonId" onclick="updateLessonContent('@lesson.LessonId')">@lesson.Title</a>
-                </div>
-            }
-            <!-- Button to add a new lesson -->
-            @if ((User.Claims.FirstOrDefault(c => c.Type == "role")?.Value.Equals("Instructor") ?? false) ||
-            (User.Claims.FirstOrDefault(c => c.Type == "role")?.Value.Equals("Admin") ?? false))
-            {
-                <div>
-                    <a asp-controller="Lesson" asp-action="Upsert" asp-route-courseId="@Model.CourseId" class="btn btn-success btn-block">Add New Lesson</a>
-                </div>
-            }
+<div class="row">
+    <div class="col-md-3">
+        <input type="hidden" id="userRole" value="@User.Claims.FirstOrDefault(c => c.Type == "role")?.Value" />
+        <input type="hidden" id="userId" value="@User.Claims.FirstOrDefault(c => c.Type == "id")?.Value" />
+        <input type="hidden" id="instId" value="@Model.UserId" />
+        <input type="hidden" id="courseId" value="@Model.CourseId" />
+        <input type="hidden" id="isEnrolled" value="@Model.Enrollments.Any(e => e.CourseId == Model.CourseId && e.UserId == (Convert.ToInt32(@User.Claims.FirstOrDefault(c => c.Type == "id")?.Value))).ToString()" />
+        <!-- Display Lesson titles as links -->
+        <div class="mb-4">
+            <h4 class="mb-3">Lesson Titles</h4>
+            <ul class="list-group">
+                @foreach (var lesson in Model.Lessons)
+                {
+                    <li class="list-group-item">
+                        <a href="#" data-lessonid="@lesson.LessonId" onclick="updateLessonContent('@lesson.LessonId')">@lesson.Title</a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (lesson.UserLessonProgresses.Any(ulp => ulp.UserId == Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value) && ulp.IsCompleted))
+                            {
+                                <i class="bi bi-check-circle-fill justify-content-end"></i>
+                            }
+                            else if (lesson.UserLessonProgresses.Any(ulp => ulp.UserId == Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value) && !ulp.IsCompleted))
+                            {
+                                <i class="bi bi-check-circle justify-content-end"></i>
+                            }
+                        }
+                        @if ((User.Identity.IsAuthenticated) && (((((User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Instructor")))) && ((Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)) == Model.UserId)) ||
+                       User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Admin")))
+                        {
+                            <a asp-controller="Lesson" asp-action="Delete" asp-route-lessonId="@lesson.LessonId"><i class="bi bi-trash-fill justify-content-end"></i></a>
+                        }
+                    </li>
+                }
+            </ul>
         </div>
-        <div class="col-md-9">
-            <!-- Display Lesson content here -->
-            <div id="lessonContent">
-                <!-- Content for the selected Lesson will be loaded here -->
+        <!-- Button to add a new lesson -->
+        @if ((User.Identity.IsAuthenticated) && (((((User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Instructor")))) && ((Convert.ToInt32(User.Claims.FirstOrDefault(c => c.Type == "id").Value)) == Model.UserId)) ||
+        User.Claims.FirstOrDefault(c => c.Type == "role").Value.Equals("Admin")))
+        {
+            <div class="mb-4">
+                <a asp-controller="Lesson" asp-action="Upsert" asp-route-courseId="@Model.CourseId" class="btn btn-success btn-block">Add New Lesson</a>
             </div>
+        }
 
-            <input type="hidden" id="hiddenLessonId" value="" />
-        </div>
     </div>
+    <div class="col-md-9">
+        <!-- Display Lesson content here -->
+        <div id="lessonContent">
+            <!-- Content for the selected Lesson will be loaded here -->
+        </div>
+
+        <input type="hidden" id="hiddenLessonId" value="" />
+    </div>
+</div>
 </div>
 
 @section scripts1 {
     <script>
+        var userRole = $("#userRole").val();
+        var userId = $("#userId").val();
+        var instId = $("#instId").val();
+        var courseId = $("#courseId").val();
+        var isEnrolled = $("#isEnrolled").val();
+        console.log(isEnrolled)//del
         // Function to update the lesson content when a title is clicked
         function updateLessonContent(lessonId) {
-            console.log(lessonId);
             var hiddenLessonId = document.getElementById('hiddenLessonId');
             hiddenLessonId.value = lessonId;
 
@@ -102,22 +134,43 @@
                             });
                             lessonContentDiv.appendChild(contentList);
                         }
-                        // Generate the "Add New Content" button for the selected lesson
-                        // if ((User.Claims.FirstOrDefault(c => c.Type == "role")?.Value.Equals("Instructor") ?? false) || (User.Claims.FirstOrDefault(c => c.Type == "role")?.Value.Equals("Admin") ?? false)) {
-                        // }
+                        if ((userRole === "Admin") || ((userRole === "Instructor") && (userId === instId))) {
+                            // Generate the "Add New Content" button for the selected lesson
+                            var addContentButton = document.createElement('button');
+                            addContentButton.className = 'btn btn-primary';
+                            addContentButton.textContent = 'Add New Content';
 
-
-                        var addContentButton = document.createElement('button');
-                        addContentButton.className = 'btn btn-primary';
-                        addContentButton.textContent = 'Add New Content';
-                        addContentButton.onclick = function () {
-                            // Redirect to the content creation page with the selected lesson ID
-
+                            addContentButton.onclick = function () {
+                                // Redirect to the content creation page with the selected lesson ID
                                 window.location.href = '/Content/Upsert?lessonId=' + data.LessonId;
-                            
-                        };
-                        lessonContentDiv.appendChild(addContentButton);
-
+                            };
+                            lessonContentDiv.appendChild(addContentButton);
+                        }
+                        if (isEnrolled === "True") {
+                            var lessonProgress = data.UserLessonProgresses.$values;
+                            if (lessonProgress[0].IsCompleted === false) {
+                                var completeButton = document.createElement('button');
+                                completeButton.className = 'btn btn-success';
+                                completeButton.textContent = 'Complete';
+                                completeButton.onclick = function () {
+                                    // Send an AJAX request to mark the lesson as completed
+                                    $.ajax({
+                                        url: '/Lesson/CompleteLesson', // Replace with the actual URL and controller action
+                                        type: 'POST',
+                                        data: { lessonId: data.LessonId },
+                                        success: function () {
+                                            // Reload the content to show the completion status
+                                            var url = '/Course/Edit?courseId=' + courseId;
+                                            window.location.href = url;
+                                        },
+                                        error: function (error) {
+                                            console.error(error);
+                                        }
+                                    });
+                                };
+                                lessonContentDiv.appendChild(completeButton);
+                            }
+                        }
                     }
                 },
                 error: function (error) {

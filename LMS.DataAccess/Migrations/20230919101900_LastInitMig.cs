@@ -122,6 +122,36 @@ namespace LMS.DataAccess.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+
+            migrationBuilder.CreateTable(
+                name: "UserLessonProgresses",
+                columns: table => new
+                {
+                    UserLessonProgressId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    LessonId = table.Column<int>(type: "int", nullable: false),
+                    IsCompleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserLessonProgresses", x => x.UserLessonProgressId);
+                    table.ForeignKey(
+                        name: "FK_UserLessonProgresses_Lessons_LessonId",
+                        column: x => x.LessonId,
+                        principalTable: "Lessons",
+                        principalColumn: "LessonId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_UserLessonProgresses_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+
+
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "UserId", "Email", "Password", "Role", "Name" },
@@ -179,6 +209,16 @@ namespace LMS.DataAccess.Migrations
                 name: "IX_Lessons_CourseId",
                 table: "Lessons",
                 column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+               name: "IX_UserLessonProgresses_LessonId",
+               table: "UserLessonProgresses",
+               column: "LessonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserLessonProgresses_UserId",
+                table: "UserLessonProgresses",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -189,6 +229,9 @@ namespace LMS.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Enrollments");
+
+            migrationBuilder.DropTable(
+                name: "UserLessonProgresses");
 
             migrationBuilder.DropTable(
                 name: "Lessons");

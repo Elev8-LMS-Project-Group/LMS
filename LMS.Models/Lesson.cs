@@ -18,5 +18,8 @@ namespace LMS.Models
         public int CourseId { get; set; }
         public virtual Course? Course { get; set; }
         public virtual ICollection<Content>? Contents { get; set; }
+
+        ///eklenen 
+        public virtual ICollection<UserLessonProgress>? UserLessonProgresses { get; set; }
     }
 }

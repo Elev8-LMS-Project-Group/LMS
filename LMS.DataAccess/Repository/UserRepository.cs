@@ -15,5 +15,6 @@ namespace LMS.DataAccess.Repository
         {
             _db = db;
         }
+
     }
 }

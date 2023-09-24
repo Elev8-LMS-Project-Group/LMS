@@ -17,11 +17,7 @@
                 <td>@user.Email</td>
                 <td>@user.Role</td>
                 <td>
-                    <form method="post" asp-controller="Admin" asp-action="DeleteUser" asp-route-userId="@user.UserId">
-                        <button type="submit" class="btn btn-danger border form-control">
-                            Delete
-                        </button>
-                    </form>
+                    <a href="@Url.Action("DeleteUser", "Admin", new { id = user.UserId })" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
         }

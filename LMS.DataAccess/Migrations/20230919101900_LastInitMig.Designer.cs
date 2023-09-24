@@ -230,6 +230,32 @@ namespace LMS.DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("LMS.Models.UserLessonProgress", b =>
+            {
+                b.Property<int>("UserLessonProgressId")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserLessonProgressId"));
+
+                b.Property<bool>("IsCompleted")
+                    .HasColumnType("bit");
+
+                b.Property<int>("LessonId")
+                    .HasColumnType("int");
+
+                b.Property<int>("UserId")
+                    .HasColumnType("int");
+
+                b.HasKey("UserLessonProgressId");
+
+                b.HasIndex("LessonId");
+
+                b.HasIndex("UserId");
+
+                b.ToTable("UserLessonProgresses");
+            });
+
             modelBuilder.Entity("LMS.Models.Content", b =>
                 {
                     b.HasOne("LMS.Models.Lesson", "Lesson")
@@ -281,6 +307,25 @@ namespace LMS.DataAccess.Migrations
 
                     b.Navigation("Course");
                 });
+
+            modelBuilder.Entity("LMS.Models.UserLessonProgress", b =>
+            {
+                b.HasOne("LMS.Models.Lesson", "Lesson")
+                    .WithMany("UserLessonProgresses")
+                    .HasForeignKey("LessonId")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
+
+                b.HasOne("LMS.Models.User", "User")
+                    .WithMany("UserLessonProgresses")
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
+
+                b.Navigation("Lesson");
+
+                b.Navigation("User");
+            });
 
             modelBuilder.Entity("LMS.Models.Course", b =>
                 {

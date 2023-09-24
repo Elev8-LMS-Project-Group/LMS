@@ -12,3 +12,17 @@ C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Utility\obj\Debug\ne
 C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Utility\obj\Debug\net7.0\LMS.Utility.pdb
 C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Utility\obj\Debug\net7.0\LMS.Utility.genruntimeconfig.cache
 C:\Users\Nilay\Desktop\project-group1\19.09.23\LMS-Utku\LMS.Utility\obj\Debug\net7.0\ref\LMS.Utility.dll
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\bin\Debug\net7.0\LMS.Utility.deps.json
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\bin\Debug\net7.0\LMS.Utility.runtimeconfig.json
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\bin\Debug\net7.0\LMS.Utility.dll
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\bin\Debug\net7.0\LMS.Utility.pdb
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\obj\Debug\net7.0\LMS.Utility.csproj.AssemblyReference.cache
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\obj\Debug\net7.0\LMS.Utility.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\obj\Debug\net7.0\LMS.Utility.AssemblyInfoInputs.cache
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\obj\Debug\net7.0\LMS.Utility.AssemblyInfo.cs
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\obj\Debug\net7.0\LMS.Utility.csproj.CoreCompileInputs.cache
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\obj\Debug\net7.0\LMS.Utility.dll
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\obj\Debug\net7.0\refint\LMS.Utility.dll
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\obj\Debug\net7.0\LMS.Utility.pdb
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\obj\Debug\net7.0\LMS.Utility.genruntimeconfig.cache
+C:\Users\Nilay\source\repos\LMS\LMS.Utility\obj\Debug\net7.0\ref\LMS.Utility.dll

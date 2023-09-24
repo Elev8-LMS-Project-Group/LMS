@@ -2,11 +2,11 @@
 
 <div class="card shadow border-0 my-4">
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-    <div class="row">
-        <div class="col-12 text-center">
-                <h2 class="text-white py-2"> @(Model.Course.CourseId!=0?"Update":"Create") Course</h2>
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2"> @(Model.Course.CourseId != 0 ? "Update" : "Create") Course</h2>
+            </div>
         </div>
-    </div>
     </div>
     <div class="card-body p-4">
         <form method="post" class="row" enctype="multipart/form-data">
@@ -59,7 +59,7 @@
                          style="border-radius:5px; border:1px solid #bbb9b9" />
                 </div>
             </div>
-           
+
         </form>
     </div>
 </div>
